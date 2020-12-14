@@ -1,0 +1,22 @@
+{% extends 'base.html' %} 
+{% block title %}{{ archive.name }}{% endblock %}
+
+{% block header %}
+    <div class="row">
+        <div class="col-md-12 p-3">
+            <h3>{{ type }}: {{ archive.name }}</h3>
+            <p class="text-muted">{{ archive.posts|length }} posts</p>
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+{% endblock %}
+
+{% block main %}
+<div class="row">
+<div class="col-md-8">
+
+{% include 'main/_posts.html' %}
+
+</div><!-- /.col -->
+{% include 'main/_sidebar.html' %}
+</div><!-- /.row -->
+{% endblock %} 

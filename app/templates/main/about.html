@@ -1,0 +1,21 @@
+{% extends 'base.html' %} 
+{% block title %}关于{% endblock %}
+
+{% block header %}
+    <div class="row">
+        <div class="col-md-12 p-3">
+            <h3>关于</h3>
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+{% endblock %}
+
+{% block main %}
+<div class="row">
+<div class="col-md-8 p-3"> 
+        <p>
+            {{ options['blog_about'] }}
+        </p>  
+</div><!-- /.col -->
+{% include 'main/_sidebar.html' %}
+</div><!-- /.row -->
+{% endblock %} 

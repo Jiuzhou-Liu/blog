@@ -1,0 +1,21 @@
+{% extends 'base.html' %} 
+{% block title %}首页{% endblock %}
+
+{% block header %}
+    <div class="row">
+        <div class="col-md-12 p-3">
+            <h3>近期文章</h3>
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+{% endblock %}
+
+{% block main %}
+<div class="row">
+<div class="col-md-8">
+
+{% include 'main/_posts.html' %}
+
+</div><!-- /.col -->
+{% include 'main/_sidebar.html' %}
+</div><!-- /.row -->
+{% endblock %} 

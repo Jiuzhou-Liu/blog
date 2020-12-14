@@ -1,0 +1,100 @@
+{% extends 'base.html' %} 
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block header %}
+    <div class="row">
+        <div class="col-md-12 p-3">
+            <h3>{{ post.title }}</h3>
+            <p class="text-muted">分类: {{ post.category.name }} 时间: {{ post.created }}</p>
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+{% endblock %}
+
+{% block main %}
+<div class="row">
+<div class="col-md-8">
+<article>
+    {{ post.content }}
+</article>
+
+<section class="mt-5 mb-3">
+    <h5>评论列表:</h5> 
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-action"><a href="#">2014年1月</a></li>
+      <li class="list-group-item list-group-item-action"><a href="#">2013年12月</a></li>
+      <li class="list-group-item list-group-item-action"><a href="#">2013年11月</a></li>
+    </ul>
+
+
+    <ol class="comment-list"><li itemscope="" itemtype="http://schema.org/UserComments" id="comment-9" class="comment-body comment-parent comment-odd comment-by-author">
+        <div class="comment-author" itemprop="creator" itemscope="" itemtype="http://schema.org/Person">
+            <span itemprop="image"><img class="avatar" src="http://www.gravatar.com/avatar/20a5844bc608d51cdbe28b74495f809d?s=32&amp;r=G&amp;d=" alt="admin" width="32" height="32"></span>
+            <cite class="fn" itemprop="name"><a href="http://www.typecho.org" rel="external nofollow">admin</a></cite>
+        </div>
+        <div class="comment-meta">
+            <a href="http://t/index.php/archives/5/#comment-9"><time itemprop="commentTime" datetime="2020-12-13T17:15:55+08:00">December 13th, 2020 at 05:15 pm</time></a>
+                </div>
+        <div class="comment-content" itemprop="commentText">
+        <p>aaa</p>    </div>
+        <div class="comment-reply">
+            <a href="http://t/index.php/archives/5/?replyTo=9#respond-post-5" rel="nofollow" onclick="return TypechoComment.reply('comment-9', 9);">回复</a>    </div>
+            <div class="comment-children" itemprop="discusses">
+            <ol class="comment-list"><li itemscope="" itemtype="http://schema.org/UserComments" id="comment-11" class="comment-body comment-child comment-level-odd comment-odd comment-by-author">
+        <div class="comment-author" itemprop="creator" itemscope="" itemtype="http://schema.org/Person">
+            <span itemprop="image"><img class="avatar" src="http://www.gravatar.com/avatar/20a5844bc608d51cdbe28b74495f809d?s=32&amp;r=G&amp;d=" alt="admin" width="32" height="32"></span>
+            <cite class="fn" itemprop="name"><a href="http://www.typecho.org" rel="external nofollow">admin</a></cite>
+        </div>
+        <div class="comment-meta">
+            <a hraef="http://t/index.php/archives/5/#comment-11"><time itemprop="commentTime" datetime="2020-12-13T17:16:10+08:00">December 13th, 2020 at 05:16 pm</time></a>
+                </div>
+        <div class="comment-content" itemprop="commentText">
+        <p>aa</p>    </div>
+        <div class="comment-reply">
+            <a href="http://t/index.php/archives/5/?replyTo=11#respond-post-5" rel="nofollow" onclick="return TypechoComment.reply('comment-11', 11);">回复</a>    </div>
+            <div class="comment-children" itemprop="discusses">
+            <ol class="comment-list"><li itemscope="" itemtype="http://schema.org/UserComments" id="comment-12" class="comment-body comment-child comment-level-even comment-odd comment-by-author">
+        <div class="comment-author" itemprop="creator" itemscope="" itemtype="http://schema.org/Person">
+            <span itemprop="image"><img class="avatar" src="http://www.gravatar.com/avatar/20a5844bc608d51cdbe28b74495f809d?s=32&amp;r=G&amp;d=" alt="admin" width="32" height="32"></span>
+            <cite class="fn" itemprop="name"><a href="http://www.typecho.org" rel="external nofollow">admin</a></cite>
+        </div>
+        <div class="comment-meta">
+            <a href="http://t/index.php/archives/5/#comment-12"><time itemprop="commentTime" datetime="2020-12-13T17:16:34+08:00">December 13th, 2020 at 05:16 pm</time></a>
+                </div>
+        <div class="comment-content" itemprop="commentText">
+        <p>a</p>    </div>
+        <div class="comment-reply">
+            <a href="http://t/index.php/archives/5/?replyTo=12#respond-post-5" rel="nofollow" onclick="return TypechoComment.reply('comment-12', 12);">回复</a>    </div>
+        </li>
+    </ol>    </div>
+        </li>
+    </ol>    </div>
+        </li>
+    <li itemscope="" itemtype="http://schema.org/UserComments" id="comment-10" class="comment-body comment-parent comment-even comment-by-author">
+        <div class="comment-author" itemprop="creator" itemscope="" itemtype="http://schema.org/Person">
+            <span itemprop="image"><img class="avatar" src="http://www.gravatar.com/avatar/20a5844bc608d51cdbe28b74495f809d?s=32&amp;r=G&amp;d=" alt="admin" width="32" height="32"></span>
+            <cite class="fn" itemprop="name"><a href="http://www.typecho.org" rel="external nofollow">admin</a></cite>
+        </div>
+        <div class="comment-meta">
+            <a href="http://t/index.php/archives/5/#comment-10"><time itemprop="commentTime" datetime="2020-12-13T17:15:57+08:00">December 13th, 2020 at 05:15 pm</time></a>
+                </div>
+        <div class="comment-content" itemprop="commentText">
+        <p>B</p>    </div>
+        <div class="comment-reply">
+            <a href="http://t/index.php/archives/5/?replyTo=10#respond-post-5" rel="nofollow" onclick="return TypechoComment.reply('comment-10', 10);">回复</a>    </div>
+        </li>
+    </ol>
+
+
+
+
+
+
+
+</section>
+
+
+
+</div><!-- /.col -->
+{% include 'main/_sidebar.html' %}
+</div><!-- /.row -->
+{% endblock %} 
