@@ -13,6 +13,9 @@ flask-sqlalchemy = "*"
 flask-wtf = "*"
 faker = "*"
 flask-debugtoolbar = "*"
+bootstrap-flask = "*"
+flask-ckeditor = "*"
+flask-markdown = "*"
 
 [requires]
 python_version = "3.7"

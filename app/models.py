@@ -49,6 +49,7 @@ class Post(db.Model):
     title = db.Column(db.String(64))
     content = db.Column(db.Text)
     created = db.Column(db.DateTime, default=datetime.utcnow, index=True)
+    read_count = db.Column(db.Integer, default=0)
 
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
 
@@ -66,6 +67,7 @@ class Comment(db.Model):
     url = db.Column(db.String(255))
     content = db.Column(db.Text)
     created = db.Column(db.DateTime, default=datetime.utcnow, index=True)
+    reviewed = db.Column(db.Boolean, default=False)
 
     replied_id = db.Column(db.Integer, db.ForeignKey('comment.id'))
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))

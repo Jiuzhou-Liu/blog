@@ -75,7 +75,7 @@ def fake_tags():
 
 
 def fake_posts():
-    for i in range(7):
+    for i in range(8):
         post = Post(
             title=fake.sentence(),
             content=fake.text(300),
@@ -97,25 +97,27 @@ def fake_posts():
 
 
 def fake_comments():
-    for i in range(3):
+    for i in range(6):
         comment = Comment(
             author=fake.name(),
             mail=fake.email(),
             url=fake.url(),
             content=fake.sentence(),
             created=fake.date_time_this_year(),
+            reviewed=True,
             post=Post.query.get(random.randint(1, Post.query.count()))
         )
         db.session.add(comment)
 
     # 回复
-    for i in range(2):
+    for i in range(4):
         comment = Comment(
             author=fake.name(),
             mail=fake.email(),
             url=fake.url(),
             content=fake.sentence(),
             created=fake.date_time_this_year(),
+            reviewed=True,
             replied=Comment.query.get(
                 random.randint(1, Comment.query.count())),
             post=Post.query.get(random.randint(1, Post.query.count()))
@@ -125,9 +127,13 @@ def fake_comments():
 
 
 def fake_links():
-    twitter = Link(name='Twitter', url='#')
-    facebook = Link(name='Facebook', url='#')
-    linkedin = Link(name='LinkedIn', url='#')
-    google = Link(name='Google+', url='#')
-    db.session.add_all([twitter, facebook, linkedin, google])
+    github = Link(name='Github', url='https://github.com/jiuzhou-liu')
+    google = Link(name='Google', url='https://google.com')
+    stackOverflow = Link(name='Stack Overflow',
+                         url='https://stackoverflow.com')
+    msdn = Link(name='MSDN', url='https://docs.microsoft.com/zh-cn')
+    flask = Link(
+        name='Flask', url='https://dormousehole.readthedocs.io/en/latest')
+
+    db.session.add_all([github, google, stackOverflow, msdn, flask])
     db.session.commit()

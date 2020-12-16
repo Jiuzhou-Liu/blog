@@ -1,74 +1,64 @@
+{% from 'bootstrap/nav.html' import render_nav_item %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
-
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css" />
 
-    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
-    
+ 
+
     <title>{% block title %}{% endblock %} - {{ options['blog_title'] }}</title>
   </head>
 
-  <body style="padding-top: 5rem; ">
-
-
+  <body class="bg-default" style="padding-top: 5rem">
     <nav class="navbar navbar-expand-md navbar-light bg-white fixed-top border-bottom shadow-sm">
       <div class="container">
+        <a class="navbar-brand" href="{{ url_for('main.index') }}"><b>{{ options['blog_title'] }}</b></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-      <a class="navbar-brand" href="{{ url_for('main.index') }}"><b>{{ options['blog_title'] }}</b></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="{{ url_for('main.index') }}">首页 <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('main.about') }}"">关于</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              分类
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              
-              {% for category in categorys %}
-              <a class="dropdown-item" href="{{ url_for('main.category', category_id=category.id) }}">{{ category.name }}</a>
-              {% endfor %}
-              
-            </div>
-          </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="关键字" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
-        </form>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            {{ render_nav_item('main.index','首页') }} {{ render_nav_item('main.about','关于') }}
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 分类 </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                {% for category in categorys %}
+                <a class="dropdown-item" href="{{ url_for('main.category', category_id=category.id) }}">{{ category.name }}</a>
+                {% endfor %}
+              </div>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0" action="/search/1">
+            <input class="form-control mr-sm-2 bg-white" type="search" name="keyword" placeholder="关键字" aria-label="Search" />
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
+          </form>
+        </div>
       </div>
-    </div>
     </nav>
 
     <header class="container">{% block header %}{% endblock %}</header>
 
     <main class="container">{% block main %}{% endblock %}</main>
-     
+
     <footer class="jumbotron text-center text-muted border-top mb-0 mt-3">
       {% block footer %}
       <p>本博客模板 构建 基于<a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@空心</a>.</p>
       <p><a href="#">回到顶部</a></p>
-      {% endblock %} 
+      {% endblock %}
     </footer>
 
     <script>
       window.jQuery || document.write('<script src="{{ url_for('static', filename='js/jquery-3.5.1.slim.min.js') }}"><\/script>')
     </script>
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>
+    <script src="{{ url_for('static',filename='editormd/editormd.min.js') }}"></script>
+
   </body>
 </html>

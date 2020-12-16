@@ -4,7 +4,7 @@
     <ul class="list-group">
       <li class="list-group-item"><b>近期评论</b></li>
       {% for comment in comments %}
-      <li class="list-group-item list-group-item-action">{{ comment['author'] }}: <a href="#">{{ comment['content'] }}</a></li>
+      <li class="list-group-item list-group-item-action">{{ comment['author'] }}: <a href="{{ url_for('main.post', post_id=comment.post_id) }}">{{ comment['content'] }}</a></li>
       {% endfor %}
     </ul>
   </section>
@@ -13,7 +13,7 @@
     <ul class="list-group">
       <li class="list-group-item"><b>分类</b></li>
       {% for category in categorys %}
-      <li class="list-group-item list-group-item-action"><a href="{{ url_for('main.category', category_id=category.id) }}">{{ category['name'] }}({{ category['posts']|length }})</a></li>
+      <li class="list-group-item list-group-item-action"><a href="{{ url_for('main.category', category_id=category.id) }}">{{ category['name'] }}<span class="float-right badge badge-light">{{ category['posts']|length }}</span></a></li>
       {% endfor %}
     </ul>
   </section>
@@ -37,7 +37,10 @@
       
 
       {% for archive in archives %}
-      <li class="list-group-item list-group-item-action"><a href="#">{{ archive['year'] }}年{{ archive['month'] }}月({{ archive['count'] }})</a></li>
+
+      {# set archive_item = archive['year'] ~'-'~ archive['month'] #}
+       
+      <li class="list-group-item list-group-item-action"><a href="{{ url_for('main.archive', archive_year=archive['year'], archive_month=archive['month']) }}">{{ archive['year'] }}年{{ archive['month'] }}月<span class="float-right badge badge-light">{{ archive['count'] }}</span></a></li>
       {% endfor %}
 
     </ul>

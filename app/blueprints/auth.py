@@ -1,6 +1,6 @@
 
 from flask import render_template, flash, redirect, url_for, Blueprint
-from ..models import User
+from ..models import Option, User, Category, Tag, Post, Comment, Link
 
 auth_bp = Blueprint('auth', __name__)
 
