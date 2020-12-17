@@ -9,57 +9,49 @@ fake = Faker()
 
 
 def fake_option():
-    blog_title = Option(
-        name='blog_title',
-        value='空心的博客'
-    )
-    db.session.add(blog_title)
+    blog_title = Option(name="blog_title", value="空心的博客")
 
-    blog_sub_title = Option(
-        name='blog_sub_title',
-        value='子标题'
-    )
-    db.session.add(blog_sub_title)
+    blog_sub_title = Option(name="blog_sub_title", value="子标题")
 
-    blog_about = Option(
-        name='blog_about',
-        value='空心的个人博客'
-    )
-    db.session.add(blog_about)
+    blog_about = Option(name="blog_about", value="空心的个人博客")
 
+    text = """
+    """
+
+    blog_footer = Option(name="blog_footer", value=text)
+
+    db.session.add_all([blog_title, blog_sub_title, blog_about, blog_footer])
     db.session.commit()
 
 
 def fake_user():
-    user = User(
-        name='admin'
-    )
-    user.set_password('123456')
+    user = User(name="admin")
+    user.set_password("123456")
 
     db.session.add(user)
     db.session.commit()
 
 
-def fake_categorys():
-    category = Category(name='未分类')
+def fake_categories():
+    category = Category(name="未分类")
     db.session.add(category)
-    category = Category(name='Python')
+    category = Category(name="Python")
     db.session.add(category)
-    category = Category(name='JavaScript')
+    category = Category(name="JavaScript")
     db.session.add(category)
-    category = Category(name='Electron')
+    category = Category(name="Electron")
     db.session.add(category)
-    category = Category(name='小程序')
+    category = Category(name="小程序")
     db.session.add(category)
-    category = Category(name='Vue')
+    category = Category(name="Vue")
     db.session.add(category)
-    category = Category(name='SQL')
+    category = Category(name="SQL")
     db.session.add(category)
-    category = Category(name='Linux')
+    category = Category(name="Linux")
     db.session.add(category)
-    category = Category(name='Windows')
+    category = Category(name="Windows")
     db.session.add(category)
-    category = Category(name='Autohotkey')
+    category = Category(name="Autohotkey")
     db.session.add(category)
     db.session.commit()
 
@@ -75,21 +67,18 @@ def fake_tags():
 
 
 def fake_posts():
-    for i in range(8):
+    for i in range(30):
         post = Post(
             title=fake.sentence(),
-            content=fake.text(300),
-            category=Category.query.get(
-                random.randint(1, Category.query.count())),
-            created=fake.date_time_this_year()
+            content=fake.text(1200),
+            category=Category.query.get(random.randint(1, Category.query.count())),
+            created=fake.date_time_this_year(),
         )
 
-        tag = Tag.query.get(
-            random.randint(1, Tag.query.count()))
+        tag = Tag.query.get(random.randint(1, Tag.query.count()))
         post.tags.append(tag)
 
-        tag = Tag.query.get(
-            random.randint(1, Tag.query.count()))
+        tag = Tag.query.get(random.randint(1, Tag.query.count()))
         post.tags.append(tag)
 
         db.session.add(post)
@@ -97,7 +86,7 @@ def fake_posts():
 
 
 def fake_comments():
-    for i in range(6):
+    for i in range(300):
         comment = Comment(
             author=fake.name(),
             mail=fake.email(),
@@ -105,12 +94,12 @@ def fake_comments():
             content=fake.sentence(),
             created=fake.date_time_this_year(),
             reviewed=True,
-            post=Post.query.get(random.randint(1, Post.query.count()))
+            post=Post.query.get(random.randint(1, Post.query.count())),
         )
         db.session.add(comment)
 
     # 回复
-    for i in range(4):
+    for i in range(100):
         comment = Comment(
             author=fake.name(),
             mail=fake.email(),
@@ -118,22 +107,18 @@ def fake_comments():
             content=fake.sentence(),
             created=fake.date_time_this_year(),
             reviewed=True,
-            replied=Comment.query.get(
-                random.randint(1, Comment.query.count())),
-            post=Post.query.get(random.randint(1, Post.query.count()))
+            replied=Comment.query.get(random.randint(1, Comment.query.count())),
+            post=Post.query.get(random.randint(1, Post.query.count())),
         )
         db.session.add(comment)
     db.session.commit()
 
 
 def fake_links():
-    github = Link(name='Github', url='https://github.com/jiuzhou-liu')
-    google = Link(name='Google', url='https://google.com')
-    stackOverflow = Link(name='Stack Overflow',
-                         url='https://stackoverflow.com')
-    msdn = Link(name='MSDN', url='https://docs.microsoft.com/zh-cn')
-    flask = Link(
-        name='Flask', url='https://dormousehole.readthedocs.io/en/latest')
+    github = Link(name="Github", url="https://github.com/jiuzhou-liu")
+    stackOverflow = Link(name="Stack Overflow", url="https://stackoverflow.com")
+    msdn = Link(name="MSDN", url="https://docs.microsoft.com/zh-cn")
+    flask = Link(name="Flask", url="https://dormousehole.readthedocs.io/en/latest")
 
-    db.session.add_all([github, google, stackOverflow, msdn, flask])
+    db.session.add_all([github, stackOverflow, msdn, flask])
     db.session.commit()

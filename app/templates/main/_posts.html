@@ -4,8 +4,8 @@
     {% for post in posts %}
     <article class="card mt-3 mb-3">
       <div class="card-body">
-        <h4 class="card-title"><a href="{{ url_for('.post', post_id=post.id) }}">{{ post['title'] }}</a></h4>
-        <p class="card-text">{{ post['content'] }}</p>
+        <h4 class="card-title"><a href="{{ url_for('main.post', post_id=post.id) }}">{{ post['title'] }}</a></h4>
+        <p class="card-text">{{ post['content']|striptags|truncate }}</p>
       </div>
       <div class="card-footer text-muted">
         <small>

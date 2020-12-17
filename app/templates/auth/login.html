@@ -1,18 +1,30 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
+{% from 'bootstrap/form.html' import render_form %}
 {% block title %}登录{% endblock %}
 
 {% block header %}
-    <div class="row">
-        <div class="col-md-12 p-3">
-            <h3>登录</h3>
-        </div><!-- /.col -->
-    </div><!-- /.row -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 p-3">
+                <h3>登录</h3>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block main %}
-<div class="row">
-<div class="col-md-4 p-3 mx-auto"> 
-       
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 p-3 mx-auto"> 
+                {{ render_form(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %} 
+
+
+
+{# 
      <form method="post">
         <div class="form-group">
             <label>Name</label>
@@ -29,6 +41,4 @@
           </div>
          <button type="submit" class="btn btn-block btn-primary">登录</button>
      </form>
-</div><!-- /.col -->
-</div><!-- /.row -->
-{% endblock %} 
+#}

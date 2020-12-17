@@ -1,5 +1,7 @@
 body {
     background-color:#f2f2f7; 
-    font-family: 'Microsoft JhengHei UI';
+    /*font-family: 'Microsoft JhengHei UI';*/
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
+
 }
 

@@ -16,6 +16,7 @@ flask-debugtoolbar = "*"
 bootstrap-flask = "*"
 flask-ckeditor = "*"
 flask-markdown = "*"
+flask-login = "*"
 
 [requires]
 python_version = "3.7"

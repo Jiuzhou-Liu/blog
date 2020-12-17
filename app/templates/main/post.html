@@ -4,68 +4,64 @@
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block header %}
-    <div class="row">
-        <div class="col-md-12 p-3">
-            <h3>{{ post.title }}</h3>
-            <p class="text-muted">阅读: {{ post.read_count }} 分类: {{ post.category.name }} 时间: {{ post.created }}</p>
-            <p class="text-muted">标签: 
-                {% for tag in post.tags %}
-                {{ tag.name }} 
-                {% endfor %}
-            </p>
-        </div><!-- /.col -->
-    </div><!-- /.row -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 p-3">
+                <h3>{{ post.title }}</h3>
+                <p class="text-muted">阅读: {{ post.read_count }} 分类: {{ post.category.name }} 时间: {{ post.created }}</p>
+                <p class="text-muted">标签: 
+                    {% for tag in post.tags %}
+                    {{ tag.name }} 
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block main %}
-<div class="row">
-<div class="col-md-8">
-<article>
-    {{ post.content }}
-</article>
-
-<section class="mt-5 mb-3 comment">
-    <ul class="list-group">
-        <li class="list-group-item">
-            <b>评论</b>
-            <span class="float-right badge badge-light">{{post_comments|length}}</span>
-        </li>
-        {% for comment in post_comments%}
-            <li class="list-group-item">
-                <header>
-                    <b>{{comment.author}}:</b> 
-                    <span class="float-right">
-                        <small>{{comment.created}}</small>
-                    </span>
-                </header>
-
-                {% if comment.replied %}
-                <blockquote class="list-group-item bg-light mt-2 mb-2">{{ comment.replied.author }}:
-                    <br>{{ comment.replied.content }}
-                </blockquote>
-                {%- endif -%}
-
-                <p class="content">
-                    {{comment.content}}
-                </p>
-                <div>
-                    <span class="float-right">
-                        <button class="btn btn-light btn-sm">回复</button>
-                    </span>
-                </div>
-            </li>
-        {%endfor%}
-    </ul>
-
-</section>
-
-{% if post_comments %}
-    {{ render_pagination(pagination, fragment='#comments') }}
-{% endif %}
-
-
-
-</div><!-- /.col -->
-{% include 'main/_sidebar.html' %}
-</div><!-- /.row -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <article>{{ post.content }}</article>
+                <section class="mt-5 mb-3 comment">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <b>评论</b>
+                            <span class="float-right badge badge-light">{{post_comments|length}}</span>
+                        </li>
+                        {% for comment in post_comments%}
+                            <li class="list-group-item">
+                                <header>
+                                    <b>{{comment.author}}:</b> 
+                                    <span class="float-right">
+                                        <small>{{comment.created}}</small>
+                                    </span>
+                                </header>
+                            
+                                {% if comment.replied %}
+                                    <blockquote class="list-group-item bg-light mt-2 mb-2">{{ comment.replied.author }}:
+                                        <br>{{ comment.replied.content }}
+                                    </blockquote>
+                                {%- endif -%}
+                            
+                                <p class="content">
+                                    {{comment.content}}
+                                </p>
+                                <div>
+                                    <span class="float-right">
+                                        <button class="btn btn-light btn-sm">回复</button>
+                                    </span>
+                                </div>
+                            </li>
+                        {%endfor%}
+                    </ul>
+                </section>
+                    {% if post_comments %}
+                        {{ render_pagination(pagination, fragment='#comments') }}
+                    {% endif %}
+            </div>
+            {% include 'main/_sidebar.html' %}
+        </div>
+    </div>
 {% endblock %} 
