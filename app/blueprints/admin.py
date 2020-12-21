@@ -22,12 +22,19 @@ from ..forms import (
     SearchForm,
 )
 
+from flask_login import login_required, current_user
+
 from ..utils import redirect_back
 
 admin_bp = Blueprint("admin", __name__)
 
 
-@admin_bp.route("/admin/option", methods=["GET", "POST"])
+@admin_bp.before_request
+@login_required
+def login_protect():
+    pass
+
+@admin_bp.route("/option", methods=["GET", "POST"])
 def option():
     form = OptionForm()
     blog_title = Option.query.filter_by(name="blog_title").first()
@@ -54,13 +61,13 @@ def option():
     return render_template("admin/option.html", form=form)
 
 
-@admin_bp.route("/admin/manage_categories")
+@admin_bp.route("/manage_categories")
 def manage_categories():
     categories = Category.query.all()
     return render_template("admin/manage_categories.html", categories=categories)
 
 
-@admin_bp.route("/admin/edit_category/<int:category_id>", methods=["GET", "POST"])
+@admin_bp.route("/edit_category/<int:category_id>", methods=["GET", "POST"])
 def edit_category(category_id):
     category = Category.query.get_or_404(category_id)
     form = CategoryForm()
@@ -73,7 +80,7 @@ def edit_category(category_id):
     return render_template("admin/category.html", form=form, type="编辑")
 
 
-@admin_bp.route("/admin/add_category", methods=["GET", "POST"])
+@admin_bp.route("/add_category", methods=["GET", "POST"])
 def add_category():
     form = CategoryForm()
     if form.validate_on_submit():
@@ -85,7 +92,7 @@ def add_category():
     return render_template("admin/category.html", form=form, type="添加")
 
 
-@admin_bp.route("/admin/delete_category")
+@admin_bp.route("/delete_category")
 def delete_category():
     category = Category.query.get_or_404(request.args.get("category_id"))
     db.session.delete(category)
@@ -94,13 +101,13 @@ def delete_category():
     return redirect_back()
 
 
-@admin_bp.route("/admin/manage_tags")
+@admin_bp.route("/manage_tags")
 def manage_tags():
     tags = Tag.query.all()
     return render_template("admin/manage_tags.html", tags=tags)
 
 
-@admin_bp.route("/admin/edit_tag/<int:tag_id>", methods=["GET", "POST"])
+@admin_bp.route("/edit_tag/<int:tag_id>", methods=["GET", "POST"])
 def edit_tag(tag_id):
     tag = Tag.query.get_or_404(tag_id)
     form = TagForm()
@@ -113,7 +120,7 @@ def edit_tag(tag_id):
     return render_template("admin/tag.html", form=form, type="编辑")
 
 
-@admin_bp.route("/admin/add_tag", methods=["GET", "POST"])
+@admin_bp.route("/add_tag", methods=["GET", "POST"])
 def add_tag():
     form = TagForm()
     if form.validate_on_submit():
@@ -125,7 +132,7 @@ def add_tag():
     return render_template("admin/tag.html", form=form, type="添加")
 
 
-@admin_bp.route("/admin/delete_tag")
+@admin_bp.route("/delete_tag")
 def delete_tag():
     tag = Tag.query.get_or_404(request.args.get("tag_id"))
     db.session.delete(tag)
@@ -134,7 +141,7 @@ def delete_tag():
     return redirect_back()
 
 
-@admin_bp.route("/admin/manage_posts")
+@admin_bp.route("/manage_posts")
 def manage_posts():
     page = request.args.get("page", 1, type=int)
     pagination = Post.query.order_by(Post.created.desc()).paginate(page, per_page=10)
@@ -147,7 +154,7 @@ def manage_posts():
     )
 
 
-@admin_bp.route("/admin/write_post", methods=["GET", "POST"])
+@admin_bp.route("/write_post", methods=["GET", "POST"])
 def write_post():
     form = PostForm()
     if form.validate_on_submit():
@@ -168,7 +175,7 @@ def write_post():
     return render_template("admin/write_post.html", form=form)
 
 
-@admin_bp.route("/admin/edit_post/<int:post_id>", methods=["GET", "POST"])
+@admin_bp.route("/edit_post/<int:post_id>", methods=["GET", "POST"])
 def edit_post(post_id):
     post = Post.query.get_or_404(post_id)
     form = PostForm()
@@ -197,7 +204,7 @@ def edit_post(post_id):
     return render_template("admin/post.html", form=form, type="编辑")
 
 
-@admin_bp.route("/admin/delete_post")
+@admin_bp.route("/delete_post")
 def delete_post():
     post = Post.query.get_or_404(request.args.get("post_id"))
     db.session.delete(post)
@@ -206,7 +213,7 @@ def delete_post():
     return redirect(url_for("admin.manage_posts"))
 
 
-@admin_bp.route("/admin/manage_comments")
+@admin_bp.route("/manage_comments")
 def manage_comments():
     page = request.args.get("page", 1, type=int)
 
@@ -232,7 +239,7 @@ def manage_comments():
     )
 
 
-@admin_bp.route("/admin/approve_comment")
+@admin_bp.route("/approve_comment")
 def approve_comment():
     # 切换审核状态
     comment = Comment.query.get_or_404(request.args.get("comment_id"))
@@ -247,7 +254,7 @@ def approve_comment():
     return redirect_back()
 
 
-@admin_bp.route("/admin/delete_comment")
+@admin_bp.route("/delete_comment")
 def delete_comment():
     comment = Comment.query.get_or_404(request.args.get("comment_id"))
     db.session.delete(comment)
@@ -256,13 +263,13 @@ def delete_comment():
     return redirect_back()
 
 
-@admin_bp.route("/admin/manage_links")
+@admin_bp.route("/manage_links")
 def manage_links():
     links = Link.query.all()
     return render_template("admin/manage_links.html", links=links)
 
 
-@admin_bp.route("/admin/edit_link/<int:link_id>", methods=["GET", "POST"])
+@admin_bp.route("/edit_link/<int:link_id>", methods=["GET", "POST"])
 def edit_link(link_id):
     link = Link.query.get_or_404(link_id)
     form = LinkForm()
@@ -277,7 +284,7 @@ def edit_link(link_id):
     return render_template("admin/link.html", form=form, type="编辑")
 
 
-@admin_bp.route("/admin/add_link", methods=["GET", "POST"])
+@admin_bp.route("/add_link", methods=["GET", "POST"])
 def add_link():
     form = LinkForm()
     if form.validate_on_submit():
@@ -289,7 +296,7 @@ def add_link():
     return render_template("admin/link.html", form=form, type="添加")
 
 
-@admin_bp.route("/admin/delete_link")
+@admin_bp.route("/delete_link")
 def delete_link():
     link = Link.query.get_or_404(request.args.get("link_id"))
     db.session.delete(link)

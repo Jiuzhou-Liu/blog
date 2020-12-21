@@ -2,69 +2,81 @@
   <section class="my-3">
     <ul class="list-group">
       <li class="list-group-item"><b>搜索</b></li>  
-      <li class="list-group-item"><form class="form-inline my-2 my-lg-0 " action="/search">
-        <input class="form-control mr-sm-2 bg-white " style="width: 100%;" type="search" name="keyword" placeholder="关键字" aria-label="Search" /> 
-      </form></li>
+      <li class="list-group-item">
+        <form class="form-inline my-2 " action="/search">
+        <input class="form-control bg-light " style="width:100%" type="search" name="keyword" placeholder="关键字" aria-label="Search" /> 
+        <button class="btn btn-primary mt-3 mr-3">搜索</button> <a class="btn btn-outline-secondary mt-3">随便看看</a>
+        </form>
+      </li>
     </ul>
   </section>
 
   {% if options['sidebar_comment']|int %}
+    {# if comments #} 
+      <section class="my-3">
+        <ul class="list-group" style="overflow-wrap: break-word;">
+          <header class="list-group-item"><b>近期评论</b></header>
+          {% for comment in comments %}
+          <li class="list-group-item list-group-item-action"><h6>{{ comment['author'] }}：</h6><a href="{{ url_for('main.post', post_id=comment.post_id) }}#{{ comment['id'] }}">{{ comment['content'] }}</a></li>
+          {% endfor %}
+        </ul>
+      </section>
+    {# endif #}
+  {% endif %}
+
+  {% if categories %} 
     <section class="my-3">
-      <ul class="list-group" style="overflow-wrap: break-word;">
-        <header class="list-group-item"><b>近期评论</b></header>
-        {% for comment in comments %}
-        <li class="list-group-item list-group-item-action"><h6>{{ comment['author'] }}：</h6><a href="{{ url_for('main.post', post_id=comment.post_id) }}#{{ comment['id'] }}">{{ comment['content'] }}</a></li>
+      <ul class="list-group">
+        <header class="list-group-item"><b>分类目录</b></header>
+        {% for category in categories %}
+        <li class="list-group-item list-group-item-action"><a href="{{ url_for('main.category', category_id=category.id) }}">{{ category['name'] }}<span class="float-right badge badge-light">{{ category['posts']|length }}</span></a></li>
         {% endfor %}
       </ul>
     </section>
   {% endif %}
 
-  <section class="my-3">
-    <ul class="list-group">
-      <header class="list-group-item"><b>分类目录</b></header>
-      {% for category in categories %}
-      <li class="list-group-item list-group-item-action"><a href="{{ url_for('main.category', category_id=category.id) }}">{{ category['name'] }}<span class="float-right badge badge-light">{{ category['posts']|length }}</span></a></li>
-      {% endfor %}
-    </ul>
-  </section>
+  {% if tags %} 
+    <section class="my-3">
+      <ul class="list-group">
+        <header class="list-group-item"><b>标签</b></header>
+        <li class="list-group-item">
+        
+          {% for tag in tags %}
+          <a class="btn btn-light btn-sm mb-1" href="{{ url_for('main.tag', tag_id=tag.id) }}">{{ tag['name'] }}</a>
+        {% endfor %}
+        </li>
+      </ul>
+    </section>
+  {% endif %}
 
-  <section class="my-3">
-    <ul class="list-group">
-      <header class="list-group-item"><b>标签</b></header>
-      <li class="list-group-item">
-       
-        {% for tag in tags %}
-        <a class="btn btn-light btn-sm mb-1" href="{{ url_for('main.tag', tag_id=tag.id) }}">{{ tag['name'] }}</a>
-      {% endfor %}
-      </li>
-    </ul>
-  </section>
+  {% if archives %} 
+    <section class="my-3">
+      <ul class="list-group">
+        <header class="list-group-item"><b>文章归档</b></header>
 
-  <section class="my-3">
-    <ul class="list-group">
-      <header class="list-group-item"><b>文章归档</b></header>
 
-      
 
-      {# for archive in (archives[::-1]) #} {# 倒着遍历 #} 
-      {% for archive in archives %}
-      {# set archive_item = archive['year'] ~'-'~ archive['month'] #}
-       
-      <li class="list-group-item list-group-item-action"><a href="{{ url_for('main.archive', archive_year=archive['year'], archive_month=archive['month']) }}">{{ archive['year'] }}年{{ archive['month'] }}月<span class="float-right badge badge-light">{{ archive['count'] }}</span></a></li>
-      {% endfor %}
+        {# for archive in (archives[::-1]) #} {# 倒着遍历 #} 
+        {% for archive in archives %}
+        {# set archive_item = archive['year'] ~'-'~ archive['month'] #}
 
-    </ul>
-  </section>
+        <li class="list-group-item list-group-item-action"><a href="{{ url_for('main.archive', archive_year=archive['year'], archive_month=archive['month']) }}">{{ archive['year'] }}年{{ archive['month'] }}月<span class="float-right badge badge-light">{{ archive['count'] }}</span></a></li>
+        {% endfor %}
 
-  <section class="my-3">
-    <ul class="list-group">
-      <header class="list-group-item"><b>链接</b></header>
-      {% for link in links %}
-      <li class="list-group-item list-group-item-action"><a href="{{ link['url'] }}">{{ link['name'] }}</a></li>
-      {% endfor %}
-    </ul>
-  </section>
+      </ul>
+    </section>
+  {% endif %}
 
+  {% if links %} 
+    <section class="my-3">
+      <ul class="list-group">
+        <header class="list-group-item"><b>链接</b></header>
+        {% for link in links %}
+        <li class="list-group-item list-group-item-action"><a href="{{ link['url'] }}">{{ link['name'] }}</a></li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
 
 </aside>
 

@@ -17,6 +17,7 @@ bootstrap-flask = "*"
 flask-ckeditor = "*"
 flask-markdown = "*"
 flask-login = "*"
+flask-mail = "*"
 
 [requires]
 python_version = "3.7"

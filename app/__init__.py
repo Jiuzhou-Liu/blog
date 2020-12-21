@@ -28,8 +28,8 @@ def create_app(config_name=None):
 
     # 注册蓝图
     app.register_blueprint(main.main_bp)
-    app.register_blueprint(auth.auth_bp)
-    app.register_blueprint(admin.admin_bp)
+    app.register_blueprint(auth.auth_bp, url_prefix='/auth')
+    app.register_blueprint(admin.admin_bp, url_prefix='/admin')
 
     # 创建模板上下文
     @app.context_processor

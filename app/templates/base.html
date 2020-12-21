@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <!--<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">-->
     <style>
       body {
         background-color:#f2f2f7; 
@@ -64,21 +64,19 @@
          
         </ul>
 
-          <!--<form class="form-inline my-2 my-lg-0" action="/search/1">
-            <input class="form-control mr-sm-2 bg-white" type="search" name="keyword" placeholder="关键字" aria-label="Search" />
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
-          </form>-->
         </div>
       </div>
     </nav>
 
     <header>
-      {% for message in get_flashed_messages(with_categories=True) %}
-        <div class="alert alert-{{ message[0] }}" role="alert">
-          <button type="button" class="close" data-dismiss="alert">&times;</button>
-          {{ message[1] }}
-        </div>
-      {% endfor %}
+      <div class="container">
+        {% for message in get_flashed_messages(with_categories=True) %}
+          <div class="alert alert-{{ message[0] }}" role="alert">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message[1] }}
+          </div>
+        {% endfor %}
+      </div>
     </header>
 
     <main class="container">
@@ -90,7 +88,7 @@
       {% block footer %}
       <div class="py-5 text-muted text-center"> 
           <p><small>© 2015-2020 空心. All Rights Reserved.<br/>
-            Powered by <a href="https://github.com/Jiuzhou-Liu/blog">LightBlog</a>.
+            Powered by <a href="https://github.com/pythoneer-ljz">LightBlog</a>.
           </small></p>
           {{ options['blog_footer']|safe }}
       </div>
