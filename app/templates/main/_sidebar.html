@@ -5,7 +5,7 @@
       <li class="list-group-item">
         <form class="form-inline my-2 " action="/search">
         <input class="form-control bg-light " style="width:100%" type="search" name="keyword" placeholder="关键字" aria-label="Search" /> 
-        <button class="btn btn-primary mt-3 mr-3">搜索</button> <a class="btn btn-outline-secondary mt-3">随便看看</a>
+        <button class="btn btn-primary mt-3 mr-3">搜索</button> <a href="{{ url_for('main.random_post') }}" class="btn btn-outline-secondary mt-3">随便看看</a>
         </form>
       </li>
     </ul>

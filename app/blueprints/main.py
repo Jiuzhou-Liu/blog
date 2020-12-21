@@ -1,3 +1,4 @@
+import random
 from flask import (
     current_app,
     flash,
@@ -152,6 +153,13 @@ def post(post_id):
         pagination=pagination,
         form=form,
     )
+
+
+@main_bp.route("/post/random")
+def random_post():
+    post = Post.query
+    i = random.randint(0, post.count() - 1)
+    return redirect(url_for("main.post", post_id=post[i].id))
 
 
 @main_bp.route("/comment/<int:comment_id>/reply", methods=["GET", "POST"])
