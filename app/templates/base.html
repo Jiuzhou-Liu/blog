@@ -1,114 +1,103 @@
 {% from 'bootstrap/nav.html' import render_nav_item %}
 
-
 <!DOCTYPE html>
 <html lang="zh-Hans" class="h-100">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
-    <!--  
-
-
-
-        https://bootswatch.com/4/cyborg/bootstrap.min.css
-        {{ url_for('static', filename='css/bootstrap.min.css') }}
-    -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css" />
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <style>
+      body {
+        background-color:#f2f2f7; 
+        font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
+      }
+    </style>
     <title>{% block title %}{% endblock %} - {{ options['blog_title'] }}</title>
   </head>
 
   <body class="d-flex flex-column h-100" style="padding-top: 5rem"> 
-    <header>
-      <nav class="navbar bg-white navbar-light navbar-expand-md fixed-top border-bottom shadow-sm">
-        <div class="container">
-          <a class="navbar-brand" href="{{ url_for('main.index') }}"><b>{{ options['blog_title'] }}</b></a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-              {{ render_nav_item('main.index','首页') }}
-              {{ render_nav_item('main.about','关于') }}
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 分类 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  {% for category in categories %}
-                    <a class="dropdown-item" href="{{ url_for('main.category', category_id=category.id) }}">{{ category.name }} <span class="float-right badge badge-light">{{ category.posts|length }}</span></a>   
-                  {% endfor %}
-                </div>
-              </li>   
-            </ul>
-
-            <ul class="navbar-nav ml-auto">   
-              {% if current_user.is_authenticated %}      
-                {{ render_nav_item('admin.write_post','写文章',use_li=True) }}
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"  role="button" data-toggle="dropdown" aria-haspopup="true"  aria-expanded="false"> 管理站点 </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" href="{{ url_for('admin.index') }}">概要</a>
-
-                      <a class="dropdown-item" href="{{ url_for('admin.option') }}">设置</a>
-
-                      <a class="dropdown-item" href="{{ url_for('admin.manage_categories') }}">分类</a>
-
-                      <a class="dropdown-item" href="{{ url_for('admin.manage_tags') }}">标签</a>
-
-                      <a class="dropdown-item" href="{{ url_for('admin.manage_posts') }}">文章</a>
-
-                      <a class="dropdown-item" href="{{ url_for('admin.manage_comments') }}">评论</a>
-
-                      <a class="dropdown-item" href="{{ url_for('admin.manage_links') }}">链接</a>     
-                  </div>
-                </li>
-                <li class="nav-item nav-link"><a href="{{ url_for('auth.logout')}}  ">注销</a></li>
-              {% else %}
-                <li class="nav-item nav-link"><a href="{{ url_for('auth.login') }} ">登录</a></li>
-              {% endif %}
-           
+    <nav class="navbar bg-white navbar-light navbar-expand-md fixed-top border-bottom shadow-sm">
+      <div class="container">
+        <a class="navbar-brand" href="{{ url_for('main.index') }}"><b>{{ options['blog_title'] }}</b></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            {{ render_nav_item('main.index','首页') }}
+            {{ render_nav_item('main.about','关于') }}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 分类 </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                {% for category in categories %}
+                  <a class="dropdown-item" href="{{ url_for('main.category', category_id=category.id) }}">{{ category.name }} <span class="float-right badge badge-light">{{ category.posts|length }}</span></a>   
+                {% endfor %}
+              </div>
+            </li>   
           </ul>
 
-            <!--<form class="form-inline my-2 my-lg-0" action="/search/1">
-              <input class="form-control mr-sm-2 bg-white" type="search" name="keyword" placeholder="关键字" aria-label="Search" />
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
-            </form>-->
-          </div>
-        </div>
-      </nav>
+          <ul class="navbar-nav ml-auto">   
+            {% if current_user.is_authenticated %}      
+              {{ render_nav_item('admin.write_post','写文章',use_li=True) }}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"  role="button" data-toggle="dropdown" aria-haspopup="true"  aria-expanded="false"> 管理 </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-      <div class="container">
-        {% for message in get_flashed_messages(with_categories=True) %}
-          <div class="alert alert-{{ message[0] }}" role="alert">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            {{ message[1] }}
-          </div>
-        {% endfor %}
+                    <a class="dropdown-item" href="{{ url_for('admin.option') }}">设置</a>
+
+                    <a class="dropdown-item" href="{{ url_for('admin.manage_categories') }}">分类</a>
+
+                    <a class="dropdown-item" href="{{ url_for('admin.manage_tags') }}">标签</a>
+
+                    <a class="dropdown-item" href="{{ url_for('admin.manage_posts') }}">文章</a>
+
+                    <a class="dropdown-item" href="{{ url_for('admin.manage_comments') }}">评论</a>
+
+                    <a class="dropdown-item" href="{{ url_for('admin.manage_links') }}">链接</a>     
+                </div>
+              </li>
+              <li class="nav-item nav-link"><a href="{{ url_for('auth.logout')}}  ">注销</a></li>
+            {% else %}
+              <li class="nav-item nav-link"><a href="{{ url_for('auth.login') }} ">登录</a></li>
+            {% endif %}
+         
+        </ul>
+
+          <!--<form class="form-inline my-2 my-lg-0" action="/search/1">
+            <input class="form-control mr-sm-2 bg-white" type="search" name="keyword" placeholder="关键字" aria-label="Search" />
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
+          </form>-->
+        </div>
       </div>
-      
-      {% block header %}{% endblock %}
+    </nav>
+
+    <header>
+      {% for message in get_flashed_messages(with_categories=True) %}
+        <div class="alert alert-{{ message[0] }}" role="alert">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          {{ message[1] }}
+        </div>
+      {% endfor %}
     </header>
 
-    <main>{% block main %}{% endblock %}</main>
+    <main class="container">
+      {% block header %}{% endblock %}
+      {% block main %}{% endblock %}
+    </main>
 
-    <footer class="mt-auto bg-light border-top">
+    <footer class="container-full mt-auto bg-light border-top">
       {% block footer %}
-      <div class="container"> 
-        <div class="py-5 text-muted text-center">
+      <div class="py-5 text-muted text-center"> 
           <p><small>© 2015-2020 空心. All Rights Reserved.<br/>
             Powered by <a href="https://github.com/Jiuzhou-Liu/blog">LightBlog</a>.
           </small></p>
           {{ options['blog_footer']|safe }}
-        </div>
       </div>
       {% endblock %}
     </footer>
-
-    <script>
-      window.jQuery || document.write('<script src="{{ url_for('static', filename='js/jquery-3.5.1.slim.min.js') }}"><\/script>')
-    </script>
-    <script src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>
-    <script src="{{ url_for('static',filename='editormd/editormd.min.js') }}"></script>
-
+   
+    <script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script>
   </body>
 </html>

@@ -10,9 +10,19 @@ from flask import (
     make_response,
 )
 from ..models import Option, User, Category, Tag, Post, Comment, Link
-from ..forms import LoginForm, PostForm, CategoryForm, TagForm, CommentForm, OptionForm, SearchForm
+from ..forms import (
+    LoginForm,
+    PostForm,
+    CategoryForm,
+    TagForm,
+    CommentForm,
+    OptionForm,
+    SearchForm,
+)
 from ..extensions import db
 from sqlalchemy import extract, and_, or_
+from ..utils import redirect_back
+
 
 main_bp = Blueprint("main", __name__)
 
@@ -83,8 +93,8 @@ def archive(archive_year, archive_month):
     )
 
 
-@main_bp.route("/search/<string:keyword>", methods=["GET", "POST"])
-def search(keyword):
+@main_bp.route("/search")
+def search():
     keyword = request.args.get("keyword")
     pagination = Post.query.filter(
         or_(
@@ -103,6 +113,29 @@ def search(keyword):
 
 @main_bp.route("/post/<int:post_id>", methods=["GET", "POST"])
 def post(post_id):
+
+    form = CommentForm()
+
+    if form.validate_on_submit():
+        comment = Comment(
+            post_id=post_id,
+            author=form.author.data,
+            mail=form.mail.data,
+            url=form.url.data,
+            content=form.content.data,
+            reviewed=True,
+        )
+
+        replied_id = request.args.get("reply")
+        if replied_id:
+            replied_comment = Comment.query.get_or_404(replied_id)
+            comment.replied = replied_comment
+            # send_new_reply_email(replied_comment)
+
+        db.session.add(comment)
+        db.session.commit()
+        return redirect_back()
+
     post = Post.query.get_or_404(post_id)
     post.read_count = post.read_count + 1
     db.session.commit()
@@ -117,4 +150,21 @@ def post(post_id):
         post=post,
         post_comments=pagination.items,
         pagination=pagination,
+        form=form,
+    )
+
+
+@main_bp.route("/comment/<int:comment_id>/reply", methods=["GET", "POST"])
+def reply_comment(comment_id):
+
+    comment = Comment.query.get_or_404(comment_id)
+
+    return redirect(
+        url_for(
+            ".post",
+            post_id=comment.post_id,
+            reply=comment_id,
+            author=comment.author,
+        )
+        + "#comment-form"
     )

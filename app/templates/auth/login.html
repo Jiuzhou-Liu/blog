@@ -2,22 +2,11 @@
 {% from 'bootstrap/form.html' import render_form %}
 {% block title %}登录{% endblock %}
 
-{% block header %}
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 p-3">
-                <h3>登录</h3>
-            </div>
-        </div>
-    </div>
-{% endblock %}
-
 {% block main %}
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 p-3 mx-auto"> 
-                {{ render_form(form) }}
-            </div>
+    <div class="row">
+        <div class="col-md-4 p-3 mx-auto"> 
+            <header class="p-3"><h3>登录</h3></header>
+            <div class="content p-3">{{ render_form(form) }}</div>
         </div>
     </div>
 {% endblock %} 

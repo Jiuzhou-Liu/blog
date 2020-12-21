@@ -1,19 +1,22 @@
 {% from 'bootstrap/pagination.html' import render_pagination %}
-<div class="content pb-3">
+<div class="articles pb-3">
   {% if posts %} 
     {% for post in posts %}
-    <article class="card mt-3 mb-3">
-      <div class="card-body">
-        <h4 class="card-title"><a href="{{ url_for('main.post', post_id=post.id) }}">{{ post['title'] }}</a></h4>
-        <p class="card-text">{{ post['content']|striptags|truncate }}</p>
+    <article class="p-3 my-3 border bg-white">
+      <header>
+        <h4><a href="{{ url_for('main.post', post_id=post.id) }}">{{ post['title'] }}</a></h4>
+      </header>
+      <div class="content">
+        <p>{{ post['content']|striptags|truncate }}</p>
       </div>
-      <div class="card-footer text-muted">
+      <footer class="text-muted">
         <small>
-          <span class="float-right">{{ post['created'].strftime('%Y-%m-%d') }}</span>
-          <i class="fa fa-eye"></i> 阅读({{ post['read_count'] }}) <i class="fa fa-comments"></i> 评论({{ post.comments|length }})
-        </small>
-      </div>
+          <a href="{{ url_for('main.category', category_id=post.category_id) }}">{{ post['category']['name'] }}</a>  &nbsp;&nbsp;|&nbsp;&nbsp;  阅读：{{ post['read_count'] }} &nbsp; 评论：<a href="{{ url_for('main.post', post_id=post.id) }}#comments">{{ post.comments|length }}</a>
+         <time class="float-right" datetime="{{ post['created'].strftime('%Y-%m-%d') }}">{{ post['created'].strftime('%Y-%m-%d') }}</time>
+        </small> 
+      </footer>
     </article>
+
     {% endfor %}
   {% else %} 
     <div class="tip">

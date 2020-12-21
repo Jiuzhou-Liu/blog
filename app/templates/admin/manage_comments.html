@@ -1,22 +1,59 @@
 {% extends 'base.html' %} 
+{% from 'bootstrap/pagination.html' import render_pagination %}
+
 {% block title %}评论管理{% endblock %}
 
-{% block header %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-12 p-3">
-            <h3>评论管理</h3>
-        </div>
-    </div>
-</div> 
-{% endblock %}
-
 {% block main %}
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12"> 
-                   1 
-            </div>   
-        </div>
-    </div>
+  <div class="row">
+      <div class="col-md-12"> 
+          <header class="p-3"><h3>评论管理 ({{ total_count }})</h3></header>
+          <ul class="nav nav-pills mb-3">    
+              <li class="nav-item">
+                  <a class="nav-link {% if request.args.get('filter', 'all') == 'all' %}active{% endif %}" href="{{ url_for('admin.manage_comments') }}">全部</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link {% if request.args.get('filter') == 'review' %}active{% endif %}" href="{{ url_for('admin.manage_comments',filter='review') }}">待审核 <span class="badge badge-success">{{ review_count }}</span></a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link {% if request.args.get('filter') == 'admin' %}active{% endif %}" href="{{ url_for('admin.manage_comments',filter='admin') }}">我的</a>
+              </li>
+          </ul>
+          <div class="table-responsive">
+              <table class="table table-striped border" style="table-layout:fixed;">
+                <thead>
+                  <tr>
+                    <th>编号</th>
+                    <th>作者</th>
+                    <th>内容</th>
+                    <th>时间</th>
+                    <th>操作</th>                
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for comment in comments %}
+                      <tr>
+                        <td>{{ comment.id }}</td>                       <td><a href="{{ url_for('main.post',post_id=comment.post_id) }}" data-toggle="tooltip" title="
+{{ comment.mail }}
+{{ comment.url }}">{{ comment.author }}</a></td>
+                          <td style="width:50px; overflow-wrap: break-word;">{{ comment.content }}</td>
+                          <td>{{ comment.created }}</td>  
+                        <td>
+                         {% if comment.reviewed %}
+                         <a class="btn btn-secondary btn-sm"
+                         href="{{ url_for('.approve_comment', comment_id=comment.id) }}" >撤审</a>
+                         {% else %}
+                         <a class="btn btn-primary btn-sm"
+                         href="{{ url_for('.approve_comment', comment_id=comment.id) }}" >审核</a>
+                         {% endif %}  
+                          <a class="btn btn-danger btn-sm"
+                          href="{{ url_for('.delete_comment', comment_id=comment.id) }}" onclick="return confirm('确定删除吗?');">删除</a>
+                        </td>
+                      </tr>
+                  {% endfor %}  
+                </tbody>
+              </table>
+          </div>
+          {{ render_pagination(pagination) }}
+      </div>   
+  </div>
 {% endblock %} 

@@ -22,7 +22,7 @@ def create_app(config_name=None):
 
     # 初始化扩展
     db.init_app(app)
-    toolbar.init_app(app)
+    # toolbar.init_app(app)
     bootstrap.init_app(app)
     login_manager.init_app(app)
 
@@ -32,20 +32,21 @@ def create_app(config_name=None):
     app.register_blueprint(admin.admin_bp)
 
     # 创建模板上下文
-
     @app.context_processor
     def make_template_context():
         options = {}
         for option in Option.query.all():
             options[option.name] = option.value
 
+        users = User.query.all()
+        
         categories = Category.query.all()
 
         tags = Tag.query.order_by(Tag.name).all()
 
         comments = Comment.query.order_by(Comment.author).limit(5)
 
-        links = Link.query.order_by(Link.name).all()
+        links = Link.query.all()
 
         archives = (
             db.session.query(
@@ -53,12 +54,16 @@ def create_app(config_name=None):
                 extract("year", Post.created).label("year"),
                 func.count("*").label("count"),
             )
-            .group_by("month")
+            .group_by("year", "month")
+            .order_by(Post.created.desc())
+            .limit(12)
+            .offset(-1)
             .all()
         )
 
         return dict(
             options=options,
+            users=users,
             categories=categories,
             tags=tags,
             archives=archives,

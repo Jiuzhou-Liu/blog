@@ -9,12 +9,13 @@ from wtforms import (
     BooleanField,
     SelectField,
     TextAreaField,
+    SelectMultipleField,
 )
 from wtforms.validators import DataRequired, Email, URL, Optional
 
 
 class LoginForm(FlaskForm):
-    name = StringField("名字", validators=[DataRequired()])
+    name = StringField("名字", validators=[DataRequired()], render_kw={"class": ""})
     password = PasswordField("密码", validators=[DataRequired()])
     remember = BooleanField("记住我")
     submit = SubmitField("登录")
@@ -23,6 +24,7 @@ class LoginForm(FlaskForm):
 class PostForm(FlaskForm):
     title = StringField("标题", validators=[DataRequired()])
     category = SelectField("分类", coerce=int, default=1)
+    tags = SelectMultipleField("标签", coerce=int)
     content = TextAreaField("内容", validators=[DataRequired()])
     submit = SubmitField("发布文章")
 
@@ -32,11 +34,15 @@ class PostForm(FlaskForm):
             (category.id, category.name)
             for category in Category.query.order_by(Category.name).all()
         ]
+        self.tags.choices = [
+            (tag.id, tag.name)
+            for tag in Tag.query.order_by(Tag.name).all()
+        ]
 
 
 class CategoryForm(FlaskForm):
     name = StringField("名称", validators=[DataRequired()])
-    submit = SubmitField()
+    submit = SubmitField("提交")
 
     def validate_name(self, field):
         if Category.query.filter_by(name=field.data).first():
@@ -45,7 +51,7 @@ class CategoryForm(FlaskForm):
 
 class TagForm(FlaskForm):
     name = StringField("名称", validators=[DataRequired()])
-    submit = SubmitField()
+    submit = SubmitField("提交")
 
     def validate_name(self, field):
         if Tag.query.filter_by(name=field.data).first():
@@ -57,7 +63,13 @@ class CommentForm(FlaskForm):
     mail = StringField("邮箱", validators=[DataRequired()])
     url = StringField("网站", validators=[Optional(), URL()])
     content = TextAreaField("内容", validators=[DataRequired()])
-    submit = SubmitField()
+    submit = SubmitField("提交")
+
+
+class LinkForm(FlaskForm):
+    name = StringField("名称", validators=[DataRequired()])
+    url = StringField("地址", validators=[Optional(), URL()])
+    submit = SubmitField("提交")
 
 
 class OptionForm(FlaskForm):
@@ -65,6 +77,7 @@ class OptionForm(FlaskForm):
     blog_sub_title = StringField("子标题")
     blog_about = TextAreaField("关于页面")
     blog_footer = TextAreaField("页脚")
+    sidebar_comment = BooleanField("侧边栏-近期评论")
     submit = SubmitField("保存设置")
 
 

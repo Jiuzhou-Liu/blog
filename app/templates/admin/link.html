@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/form.html' import render_form %}
+
+{% block title %}{{ type }}链接{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-md-4 p-3"> 
+            <header class="p-3"><h3>{{ type }}链接</h3></header>
+            <div class="content p-3">{{ render_form(form) }}</div>
+        </div>
+    </div>
+{% endblock %} 
+
+

@@ -3,23 +3,12 @@
 
 {% block title %}写文章{% endblock %}
 
-{% block header %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-12 p-3">
-            <h3>写文章</h3>
-        </div>
-    </div>
-</div> 
-{% endblock %}
-
 {% block main %}
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12"> 
-                {{ render_form(form) }}
-            </div>   
-        </div>
+    <div class="row">
+        <div class="col-md-12"> 
+            <header class="p-3"><h3>写文章</h3></header>
+            <div class="content p-3">{{ render_form(form) }}</div>
+        </div>   
     </div>
 {% endblock %} 
 

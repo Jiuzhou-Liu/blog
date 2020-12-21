@@ -2,12 +2,10 @@
 {% block title %}首页{% endblock %}
 
 {% block main %}
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8">
-                {% include 'main/_posts.html' %}
-            </div>
-            {% include 'main/_sidebar.html' %}
+    <div class="row">
+        <div class="col-md-8">
+            {% include 'main/_posts.html' %}
         </div>
+        {% include 'main/_sidebar.html' %}
     </div>
 {% endblock %} 

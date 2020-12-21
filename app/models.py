@@ -27,7 +27,7 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32), unique=True)
 
-    posts = db.relationship("Post", back_populates="category")
+    posts = db.relationship("Post", back_populates="category", cascade="all, delete-orphan")
 
 
 relationshipn_table = db.Table(
