@@ -40,7 +40,7 @@
                     {% for comment in post_comments%}
                         <li class="list-group-item" id="comment_id-{{ comment.id }}">
                             <header>
-                                <a href="{% if comment.url %}{{ comment.url }}{% else %}#{% endif %}"
+                                <a {% if comment.url %} href="{{ comment.url }}" {% endif %}
             target="_blank"><b>{{comment.author}}:</b></a>
                                 <span class="float-right">
                                     <small>{{ comment.created }}</small>

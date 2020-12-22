@@ -34,7 +34,7 @@ def fake_option():
 
 
 def fake_user():
-    user = User(name="admin")
+    user = User(name="admin", mail="2267719005@qq.com") 
     user.set_password("123456")
 
     db.session.add(user)
@@ -150,8 +150,6 @@ def fake_links():
             Link(name="我的Github", url="https://github.com/pythoneer-ljz/"),
             Link(name="我的知乎", url="https://www.zhihu.com/people/liu-jiu-zhou-32-18"),
             Link(name="我的网易云", url="https://music.163.com/#/user/home?id=484667076"),
-
-            
         ]
     )
     db.session.commit()

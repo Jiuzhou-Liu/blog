@@ -10,6 +10,7 @@ from wtforms import (
     SelectField,
     TextAreaField,
     SelectMultipleField,
+    HiddenField,
 )
 from wtforms.validators import DataRequired, Email, URL, Optional
 from flask import request
@@ -74,6 +75,18 @@ class CommentForm(FlaskForm):
         self.author.render_kw = {"value": request.cookies.get("remember_author", "")}
         self.mail.render_kw = {"value": request.cookies.get("remember_mail", "")}
         self.url.render_kw = {"value": request.cookies.get("remember_url", "")}
+
+
+class LoginCommentForm(CommentForm):
+    author = HiddenField()
+    mail = HiddenField()
+    url = HiddenField()
+
+    def __init__(self, *args, **kwargs):
+        super(CommentForm, self).__init__(*args, **kwargs)
+        self.author.render_kw = {"value": User.query.first().name}
+        self.mail.render_kw = {"value": User.query.first().mail}
+        self.url.render_kw = {"value": ""}
 
 
 class LinkForm(FlaskForm):

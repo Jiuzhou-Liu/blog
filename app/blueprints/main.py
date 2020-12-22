@@ -19,10 +19,12 @@ from ..forms import (
     CommentForm,
     OptionForm,
     SearchForm,
+    LoginCommentForm,
 )
 from ..extensions import db
 from sqlalchemy import extract, and_, or_
 from ..utils import redirect_back
+from flask_login import current_user
 
 
 main_bp = Blueprint("main", __name__)
@@ -90,8 +92,8 @@ def archive(archive_year, archive_month):
     return render_template(
         "main/archive.html",
         type="归档",
-        archive=archive, # 当前归档的所有文章
-        posts=pagination.items,  # 当前页需加载的文章
+        archive=archive,
+        posts=pagination.items,
         pagination=pagination,
     )
 
@@ -117,7 +119,10 @@ def search():
 @main_bp.route("/post/<int:post_id>")
 def post(post_id):
 
-    form = CommentForm()
+    if current_user.is_authenticated:
+        form = LoginCommentForm()
+    else:
+        form = CommentForm()
 
     # 一篇文章
     post = Post.query.get_or_404(post_id)
@@ -152,7 +157,9 @@ def comment_post(post_id):  # 评论帖子或回复帖子中的评论
 
     form = CommentForm()
 
-    if form.validate_on_submit():
+    if form.validate_on_submit() and (  # 未登录用户不能使用admin名称
+        (form.author.data != "admin") or current_user.is_authenticated
+    ):
         comment = Comment(
             post_id=post_id,
             author=form.author.data,
