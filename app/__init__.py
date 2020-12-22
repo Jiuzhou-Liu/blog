@@ -3,7 +3,7 @@ import click
 
 from flask import Flask, g
 from .settings import config
-from .extensions import db, toolbar, bootstrap, login_manager, csrf
+from .extensions import db, toolbar, bootstrap, login_manager, csrf, moment
 from .blueprints import main, auth, admin
 from .models import Option, User, Category, Tag, Post, Comment, Link
 
@@ -27,6 +27,7 @@ def create_app(config_name=None):
     bootstrap.init_app(app)
     login_manager.init_app(app)
     csrf.init_app(app)
+    moment.init_app(app)
 
     # 注册蓝图
     app.register_blueprint(main.main_bp)

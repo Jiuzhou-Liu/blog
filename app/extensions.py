@@ -3,13 +3,14 @@ from flask_debugtoolbar import DebugToolbarExtension
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_wtf import CSRFProtect
+from flask_moment import Moment
 
 db = SQLAlchemy()
 toolbar = DebugToolbarExtension()
 bootstrap = Bootstrap()
 login_manager = LoginManager()
 csrf = CSRFProtect()
-
+moment = Moment()
 
 @login_manager.user_loader
 def load_user(user_id):

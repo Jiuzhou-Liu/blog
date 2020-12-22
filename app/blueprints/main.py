@@ -217,16 +217,16 @@ def comment_post(post_id):  # 评论帖子或回复帖子中的评论
             # + str(comment.id)
         }
         if not current_user.is_authenticated:
-            header["Set-Cookie"]= [
+            header["Set-Cookie"] = [
                 "remember_author=" + form.author.data + "; Path=/",
                 "remember_mail=" + form.mail.data + "; Path=/",
                 "remember_url=" + form.url.data + "; Path=/",
             ]
- 
+
         return "", "302", header
     else:
         flash("评论失败，自己找原因", "danger")
-        return redirect_back()
+        return redirect(url_for("main.post", post_id=post_id))
 
 
 @main_bp.route("/comment/<int:comment_id>/reply", methods=["GET", "POST"])

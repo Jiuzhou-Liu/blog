@@ -12,7 +12,7 @@
         <footer class="text-muted">
           <small>
             <a href="{{ url_for('main.category', category_id=post.category_id) }}">{{ post['category']['name'] }}</a>  &nbsp;&nbsp;|&nbsp;&nbsp;  阅读：{{ post['read_count'] }} &nbsp; 评论：<a href="{{ url_for('main.post', post_id=post.id) }}#comments">{{ post.comments|length }}</a>
-           <time class="float-right" datetime="{{ post['created'].strftime('%Y-%m-%d') }}">{{ post['created'].strftime('%Y-%m-%d') }}</time>
+           <time class="float-right" datetime="{{ post['created'].strftime('%Y-%m-%d') }}">{{ moment(post.created).format('LL') }}</time>
           </small> 
         </footer>
       </article>
