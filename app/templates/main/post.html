@@ -64,12 +64,17 @@
                             </p>
                             <div># {{ loop.revindex }}
                                 <span class="float-right">
+                                    <form class="inline" method="post" action="{{ url_for('admin.delete_comment', comment_id=comment.id) }}">
                                     <a class="btn btn-light btn-sm"
        href="{{ url_for('.reply_comment', comment_id=comment.id) }}">回复</a>
                                     {% if current_user.is_authenticated %}
-                                        <a class="btn btn-light btn-sm" href="mailto:{{ comment.mail }}">邮箱</a>
-                                        <a class="btn btn-danger btn-sm" href="{{ url_for('admin.delete_comment', comment_id=comment.id) }}" onclick="return confirm('确定删除吗?');"">删除</a>
+                                            <a class="btn btn-light btn-sm" href="mailto:{{ comment.mail }}">邮箱</a>
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('确定删除吗?');">删除</button>
+                                         
+                                        
                                     {% endif %}
+                                    </form>
                                 </span>
                             </div>
                         </li>

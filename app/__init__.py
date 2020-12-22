@@ -48,7 +48,7 @@ def create_app(config_name=None):
         users = User.query.all()
         categories = Category.query.all()
         tags = Tag.query.order_by(Tag.name).all()
-        comments = Comment.query.filter_by(reviewed=True).order_by(Comment.author).limit(5)
+        comments = Comment.query.filter_by(reviewed=True).order_by(Comment.created.desc()).limit(5)
         links = Link.query.all()
 
         archives = (
