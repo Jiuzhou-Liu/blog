@@ -75,21 +75,23 @@ def tag(tag_id):
 
 @main_bp.route("/archive/<int:archive_year>/<int:archive_month>")
 def archive(archive_year, archive_month):
-    pagination = Post.query.filter(
+
+    posts = Post.query.filter(
         and_(
             extract("year", Post.created) == archive_year,
             extract("month", Post.created) == archive_month,
         )
-    ).paginate(per_page=10)
+    )
+    pagination = posts.paginate(per_page=10)
     archive = {
         "name": str(archive_year) + "年" + str(archive_month) + "月",
-        "posts": pagination.items,
+        "posts": posts.all(),
     }
     return render_template(
         "main/archive.html",
         type="归档",
-        archive=archive,
-        posts=archive["posts"],
+        archive=archive, # 当前归档的所有文章
+        posts=pagination.items,  # 当前页需加载的文章
         pagination=pagination,
     )
 
@@ -112,34 +114,17 @@ def search():
     )
 
 
-@main_bp.route("/post/<int:post_id>", methods=["GET", "POST"])
+@main_bp.route("/post/<int:post_id>")
 def post(post_id):
 
     form = CommentForm()
 
-    if form.validate_on_submit():
-        comment = Comment(
-            post_id=post_id,
-            author=form.author.data,
-            mail=form.mail.data,
-            url=form.url.data,
-            content=form.content.data,
-            reviewed=True,
-        )
-
-        replied_id = request.args.get("reply")
-        if replied_id:
-            replied_comment = Comment.query.get_or_404(replied_id)
-            comment.replied = replied_comment
-            # send_new_reply_email(replied_comment)
-
-        db.session.add(comment)
-        db.session.commit()
-        return redirect_back()
-
+    # 一篇文章
     post = Post.query.get_or_404(post_id)
+    # 递增阅读次数
     post.read_count = post.read_count + 1
     db.session.commit()
+    # 评论列表
     pagination = (
         Comment.query.with_parent(post)
         .filter_by(reviewed=True)
@@ -162,6 +147,51 @@ def random_post():
     return redirect(url_for("main.post", post_id=post[i].id))
 
 
+@main_bp.route("/post/<int:post_id>/comment", methods=["GET", "POST"])
+def comment_post(post_id):  # 评论帖子或回复帖子中的评论
+
+    form = CommentForm()
+
+    if form.validate_on_submit():
+        comment = Comment(
+            post_id=post_id,
+            author=form.author.data,
+            mail=form.mail.data,
+            url=form.url.data,
+            content=form.content.data,
+            reviewed=True,
+        )
+
+        # 被回复的评论id
+        comment_id = request.args.get("comment_id")
+        if comment_id:  # 关联父评论
+            comment.replied = Comment.query.get_or_404(comment_id)
+
+            # send_new_reply_email(replied_comment)
+
+        db.session.add(comment)
+        db.session.commit()
+
+        flash("发表成功", "success")
+
+        header = {
+            "location": url_for(".post", post_id=post_id)
+            + "#comment_id-"
+            + str(comment.id),
+            "Set-Cookie": [
+                "remember_author=" + form.author.data + "; Path=/",
+                "remember_mail=" + form.mail.data + "; Path=/",
+                "remember_url=" + form.url.data + "; Path=/",
+            ],
+        }
+        return "", "302", header
+
+        # return redirect(
+        #    url_for(".post", post_id=post_id) + "#comment_id-" + str(comment.id),
+        #    Response=make_response("").set_cookie('remember_author', form.author.data),
+        # )
+
+
 @main_bp.route("/comment/<int:comment_id>/reply", methods=["GET", "POST"])
 def reply_comment(comment_id):
 
@@ -171,7 +201,7 @@ def reply_comment(comment_id):
         url_for(
             ".post",
             post_id=comment.post_id,
-            reply=comment_id,
+            comment_id=comment_id,
             author=comment.author,
         )
         + "#comment-form"

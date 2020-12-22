@@ -19,7 +19,7 @@
                 {% if post.tags %}
                     <p class="text-muted">
                         {% for tag in post.tags %}
-                        <a class="btn btn-light btn-sm " href="{{ url_for('.tag',tag_id=tag.id) }}">{{ tag.name }}</a>
+                        <a class="btn btn-light btn-sm my-1" href="{{ url_for('.tag',tag_id=tag.id) }}">{{ tag.name }}</a>
                         {% endfor %}
                     </p>
                 {% endif %}
@@ -31,15 +31,14 @@
             <div class="" style="overflow-wrap: break-word;" class="content">{{ post.content }}</div>
             </article>
         {% if post_comments %}
-            <section class="mb-3 comment" id="comments">
+            <section class="my-3 comment" id="comments">
                 <ul class="list-group">
                     <header class="list-group-item">
-                        <b>评论</b>
-                        
+                        <b>文章评论</b>
                     </header>
 
                     {% for comment in post_comments%}
-                        <li class="list-group-item" id="{{ comment.id }}">
+                        <li class="list-group-item" id="comment_id-{{ comment.id }}">
                             <header>
                                 <a href="{% if comment.url %}{{ comment.url }}{% else %}#{% endif %}"
             target="_blank"><b>{{comment.author}}:</b></a>
@@ -79,17 +78,19 @@
                     {{ render_pagination(pagination, fragment='#comments') }}
                 {% endif %}
 
-            <section id="comment-form">
-                <h4>添加新评论</h4>
-
-                {% if request.args.get('reply') %}
+            <section class="my-3" id="comment-form">
+                <header class="py-3">
+                    <h4>添加新评论</h4> 
+                </header>
+                {% if request.args.get('comment_id') %}
                 <div class="alert alert-dark">
                 回复 <strong>{{ request.args.get('author') }}</strong>:
-                <a class="float-right" href="{{ url_for('.post', post_id=post.id) }}">取消</a>
+                <a class="float-right" href="{{ url_for('.post', post_id=post.id) }}#comment_id-{{ request.args.get('comment_id') }}">取消</a>
                 </div>
                 {% endif %}
 
-                {{ render_form(form, action=request.full_path) }}
+                {{ render_form(form, action=url_for('.comment_post', post_id=post.id, comment_id=request.args.get('comment_id'))) }}
+                
             </section>
 
         </div>

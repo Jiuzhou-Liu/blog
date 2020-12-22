@@ -12,6 +12,7 @@ from wtforms import (
     SelectMultipleField,
 )
 from wtforms.validators import DataRequired, Email, URL, Optional
+from flask import request
 
 
 class LoginForm(FlaskForm):
@@ -35,8 +36,7 @@ class PostForm(FlaskForm):
             for category in Category.query.order_by(Category.name).all()
         ]
         self.tags.choices = [
-            (tag.id, tag.name)
-            for tag in Tag.query.order_by(Tag.name).all()
+            (tag.id, tag.name) for tag in Tag.query.order_by(Tag.name).all()
         ]
 
 
@@ -61,9 +61,19 @@ class TagForm(FlaskForm):
 class CommentForm(FlaskForm):
     author = StringField("名字", validators=[DataRequired()])
     mail = StringField("邮箱", validators=[DataRequired()])
-    url = StringField("网站", validators=[Optional(), URL()])
-    content = TextAreaField("内容", validators=[DataRequired()])
+    url = StringField(
+        "网站", validators=[Optional(), URL()], render_kw={"placeholder": "http://"}
+    )
+    content = TextAreaField(
+        "内容", validators=[DataRequired()], render_kw={"placeholder": "支持Markdown"}
+    )
     submit = SubmitField("提交")
+
+    def __init__(self, *args, **kwargs):
+        super(CommentForm, self).__init__(*args, **kwargs)
+        self.author.render_kw = {"value": request.cookies.get("remember_author", "")}
+        self.mail.render_kw = {"value": request.cookies.get("remember_mail", "")}
+        self.url.render_kw = {"value": request.cookies.get("remember_url", "")}
 
 
 class LinkForm(FlaskForm):

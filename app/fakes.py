@@ -96,7 +96,7 @@ def fake_tags():
 
 
 def fake_posts():
-    for i in range(30):
+    for i in range(100):
         post = Post(
             title=fake.sentence(),
             content=fake.text(1200),
@@ -115,7 +115,7 @@ def fake_posts():
 
 
 def fake_comments():
-    for i in range(50):
+    for i in range(150):
         comment = Comment(
             author=fake.name(),
             mail=fake.email(),
@@ -128,7 +128,7 @@ def fake_comments():
         db.session.add(comment)
 
     # 回复
-    for i in range(50):
+    for i in range(150):
         comment = Comment(
             author=fake.name(),
             mail=fake.email(),

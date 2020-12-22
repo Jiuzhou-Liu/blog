@@ -1,5 +1,6 @@
 import os
 import click
+
 from flask import Flask
 from .settings import config
 from .extensions import db, toolbar, bootstrap, login_manager
@@ -17,7 +18,7 @@ def create_app(config_name=None):
     # 初始化应用
     app = Flask(__name__)
 
-    # 导入配置文件
+    # 导入配置
     app.config.from_object(config[config_name])
 
     # 初始化扩展
@@ -28,8 +29,8 @@ def create_app(config_name=None):
 
     # 注册蓝图
     app.register_blueprint(main.main_bp)
-    app.register_blueprint(auth.auth_bp, url_prefix='/auth')
-    app.register_blueprint(admin.admin_bp, url_prefix='/admin')
+    app.register_blueprint(auth.auth_bp, url_prefix="/auth")
+    app.register_blueprint(admin.admin_bp, url_prefix="/admin")
 
     # 创建模板上下文
     @app.context_processor
@@ -39,13 +40,9 @@ def create_app(config_name=None):
             options[option.name] = option.value
 
         users = User.query.all()
-        
         categories = Category.query.all()
-
         tags = Tag.query.order_by(Tag.name).all()
-
         comments = Comment.query.order_by(Comment.author).limit(5)
-
         links = Link.query.all()
 
         archives = (
