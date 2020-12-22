@@ -215,12 +215,14 @@ def comment_post(post_id):  # 评论帖子或回复帖子中的评论
             "location": url_for("main.post", post_id=post_id),
             # + "#comment_id-"
             # + str(comment.id)
-            "Set-Cookie": [
+        }
+        if not current_user.is_authenticated:
+            header["Set-Cookie"]= [
                 "remember_author=" + form.author.data + "; Path=/",
                 "remember_mail=" + form.mail.data + "; Path=/",
                 "remember_url=" + form.url.data + "; Path=/",
-            ],
-        }
+            ]
+ 
         return "", "302", header
     else:
         flash("评论失败，自己找原因", "danger")
