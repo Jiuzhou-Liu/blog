@@ -42,6 +42,7 @@ def option():
     blog_about = Option.query.filter_by(name="blog_about").first()
     blog_footer = Option.query.filter_by(name="blog_footer").first()
     sidebar_comment = Option.query.filter_by(name="sidebar_comment").first()
+    comment_review = Option.query.filter_by(name="comment_review").first()
 
     if form.validate_on_submit():
         blog_title.value = form.blog_title.data
@@ -49,7 +50,8 @@ def option():
         blog_about.value = form.blog_about.data
         blog_footer.value = form.blog_footer.data
         sidebar_comment.value = form.sidebar_comment.data
-
+        comment_review.value = form.comment_review.data
+        
         db.session.commit()
         flash("设置保存成功", "success")
         return redirect(url_for("main.index"))
@@ -58,6 +60,8 @@ def option():
     form.blog_about.data = blog_about.value
     form.blog_footer.data = blog_footer.value
     form.sidebar_comment.data = int(sidebar_comment.value)
+    form.comment_review.data = int(comment_review.value)
+
     return render_template("admin/option.html", form=form)
 
 
@@ -239,7 +243,7 @@ def manage_comments():
     )
 
 
-@admin_bp.route("/comment/<int:comment_id>/approve")
+@admin_bp.route("/comment/<int:comment_id>/approve", methods=['POST'])
 def approve_comment(comment_id):
     # 切换审核状态
     comment = Comment.query.get_or_404(comment_id)

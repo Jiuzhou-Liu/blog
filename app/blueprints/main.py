@@ -1,6 +1,7 @@
 import random
 from flask import (
     current_app,
+    g,
     flash,
     Blueprint,
     render_template,
@@ -136,12 +137,34 @@ def post(post_id):
         .order_by(Comment.created.desc())
         .paginate(per_page=10)
     )
+
+    # 获取上篇下篇
+    p_index = -1
+    n_index = -1
+    posts = Post.query.order_by(Post.created)
+    for i, p in enumerate(posts):
+        if p.id == post_id:
+            p_index = i - 1
+            n_index = i + 1
+
+    if n_index == posts.count():
+        next_post = None
+    else:
+        next_post = posts[n_index]
+
+    if p_index == -1:
+        prev_post = None
+    else:
+        prev_post = posts[p_index]
+
     return render_template(
         "main/post.html",
         post=post,
         post_comments=pagination.items,
         pagination=pagination,
         form=form,
+        prev_post=prev_post,
+        next_post=next_post,
     )
 
 
@@ -152,7 +175,7 @@ def random_post():
     return redirect(url_for("main.post", post_id=post[i].id))
 
 
-@main_bp.route("/post/<int:post_id>/comment", methods=["GET", "POST"])
+@main_bp.route("/post/<int:post_id>/comment", methods=["POST"])
 def comment_post(post_id):  # 评论帖子或回复帖子中的评论
 
     form = CommentForm()
@@ -166,8 +189,12 @@ def comment_post(post_id):  # 评论帖子或回复帖子中的评论
             mail=form.mail.data,
             url=form.url.data,
             content=form.content.data,
-            reviewed=True,
+            reviewed=False if int(g.options["comment_review"]) else True,
+            ip=request.remote_addr,
         )
+
+        if current_user.is_authenticated:
+            comment.reviewed = True
 
         # 被回复的评论id
         comment_id = request.args.get("comment_id")
@@ -179,12 +206,15 @@ def comment_post(post_id):  # 评论帖子或回复帖子中的评论
         db.session.add(comment)
         db.session.commit()
 
-        flash("发表成功", "success")
+        if int(comment.reviewed):
+            flash("发表成功", "success")
+        else:
+            flash("发表成功, 请等待审核", "success")
 
         header = {
-            "location": url_for(".post", post_id=post_id)
-            + "#comment_id-"
-            + str(comment.id),
+            "location": url_for("main.post", post_id=post_id),
+            # + "#comment_id-"
+            # + str(comment.id)
             "Set-Cookie": [
                 "remember_author=" + form.author.data + "; Path=/",
                 "remember_mail=" + form.mail.data + "; Path=/",
@@ -192,11 +222,9 @@ def comment_post(post_id):  # 评论帖子或回复帖子中的评论
             ],
         }
         return "", "302", header
-
-        # return redirect(
-        #    url_for(".post", post_id=post_id) + "#comment_id-" + str(comment.id),
-        #    Response=make_response("").set_cookie('remember_author', form.author.data),
-        # )
+    else:
+        flash("评论失败，自己找原因", "danger")
+        return redirect_back()
 
 
 @main_bp.route("/comment/<int:comment_id>/reply", methods=["GET", "POST"])

@@ -28,6 +28,7 @@ def fake_option():
           </small></p>""",
             ),
             Option(name="sidebar_comment", value=True),
+            Option(name="comment_review", value=False),
         ]
     )
     db.session.commit()

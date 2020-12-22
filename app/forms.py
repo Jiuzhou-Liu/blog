@@ -101,6 +101,7 @@ class OptionForm(FlaskForm):
     blog_about = TextAreaField("关于页面")
     blog_footer = TextAreaField("页脚")
     sidebar_comment = BooleanField("侧边栏-近期评论")
+    comment_review = BooleanField("评论需要审核")
     submit = SubmitField("保存设置")
 
 

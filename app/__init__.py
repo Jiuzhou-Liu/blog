@@ -1,7 +1,7 @@
 import os
 import click
 
-from flask import Flask
+from flask import Flask, g
 from .settings import config
 from .extensions import db, toolbar, bootstrap, login_manager, csrf
 from .blueprints import main, auth, admin
@@ -33,17 +33,22 @@ def create_app(config_name=None):
     app.register_blueprint(auth.auth_bp, url_prefix="/auth")
     app.register_blueprint(admin.admin_bp, url_prefix="/admin")
 
-    # 创建模板上下文
-    @app.context_processor
-    def make_template_context():
+    # 每个请求之前
+    @app.before_request
+    def get_options():
         options = {}
         for option in Option.query.all():
             options[option.name] = option.value
+        g.options = options
+
+    # 创建模板上下文
+    @app.context_processor
+    def make_template_context():
 
         users = User.query.all()
         categories = Category.query.all()
         tags = Tag.query.order_by(Tag.name).all()
-        comments = Comment.query.order_by(Comment.author).limit(5)
+        comments = Comment.query.filter_by(reviewed=True).order_by(Comment.author).limit(5)
         links = Link.query.all()
 
         archives = (
@@ -60,14 +65,14 @@ def create_app(config_name=None):
         )
 
         return dict(
-            options=options,
+            options=g.options,
             users=users,
             categories=categories,
             tags=tags,
             archives=archives,
             comments=comments,
             links=links,
-            review_comments_count=Comment.query.filter_by(reviewed=False).count()
+            review_comments_count=Comment.query.filter_by(reviewed=False).count(),
         )
 
     # 创建Shell命令

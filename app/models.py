@@ -68,6 +68,7 @@ class Comment(db.Model):
     mail = db.Column(db.String(150))
     url = db.Column(db.String(255))
     content = db.Column(db.Text)
+    ip = db.Column(db.String(32))
     created = db.Column(db.DateTime, default=datetime.utcnow, index=True)
     reviewed = db.Column(db.Boolean, default=False)
 
