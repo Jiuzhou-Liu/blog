@@ -38,15 +38,18 @@
                           <td style="width:50px; overflow-wrap: break-word;">{{ comment.content }}</td>
                           <td>{{ comment.created }}</td>  
                         <td>
-                         {% if comment.reviewed %}
-                         <a class="btn btn-secondary btn-sm"
-                         href="{{ url_for('.approve_comment', comment_id=comment.id) }}" >撤审</a>
-                         {% else %}
-                         <a class="btn btn-primary btn-sm"
-                         href="{{ url_for('.approve_comment', comment_id=comment.id) }}" >审核</a>
-                         {% endif %}  
-                          <a class="btn btn-danger btn-sm"
-                          href="{{ url_for('.delete_comment', comment_id=comment.id) }}" onclick="return confirm('确定删除吗?');">删除</a>
+                            <form class="inline" method="post" action="{{ url_for('.approve_comment', comment_id=comment.id) }}">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                            {% if comment.reviewed %}
+                            <button class="btn btn-secondary btn-sm" >撤审</button>
+                            {% else %}
+                            <button class="btn btn-primary btn-sm" >审核</button>
+                            {% endif %}  
+                          </form>
+                            <form class="inline" method="post" action="{{ url_for('.delete_comment', comment_id=comment.id) }}">
+                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                          <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('确定删除吗?');">删除</button>
+                          </form>
                         </td>
                       </tr>
                   {% endfor %}  

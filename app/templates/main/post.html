@@ -25,7 +25,13 @@
                 {% endif %}
 
                     {% if current_user.is_authenticated %}
-                    <p><a class="btn btn-info btn-sm" href="{{ url_for('admin.edit_post',post_id=post.id) }}">编辑</a> <a class="btn btn-danger btn-sm" href="{{ url_for('admin.delete_post',post_id=post.id) }}" onclick="return confirm('确定删除吗?');">删除</a></p>
+                    <p>
+                        <form class="inline" method="post" action="{{ url_for('admin.delete_post', post_id=post.id, next=url_for('.index')) }}">
+                            <a class="btn btn-info btn-sm" href="{{ url_for('admin.edit_post',post_id=post.id) }}">编辑</a> 
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('确定删除吗?');">删除</button>
+                        </form>
+                    </p>
                     {% endif %}
             </header>
             <div class="" style="overflow-wrap: break-word;" class="content">{{ post.content }}</div>

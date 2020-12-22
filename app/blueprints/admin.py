@@ -92,9 +92,9 @@ def add_category():
     return render_template("admin/category.html", form=form, type="添加")
 
 
-@admin_bp.route("/delete_category")
-def delete_category():
-    category = Category.query.get_or_404(request.args.get("category_id"))
+@admin_bp.route("/category/<int:category_id>/delete", methods=['POST'])
+def delete_category(category_id):
+    category = Category.query.get_or_404(category_id)
     db.session.delete(category)
     db.session.commit()
     flash("删除成功", "success")
@@ -132,9 +132,9 @@ def add_tag():
     return render_template("admin/tag.html", form=form, type="添加")
 
 
-@admin_bp.route("/delete_tag")
-def delete_tag():
-    tag = Tag.query.get_or_404(request.args.get("tag_id"))
+@admin_bp.route("/tag/<int:tag_id>/delete", methods=['POST'])
+def delete_tag(tag_id):
+    tag = Tag.query.get_or_404(tag_id)
     db.session.delete(tag)
     db.session.commit()
     flash("删除成功", "success")
@@ -204,13 +204,13 @@ def edit_post(post_id):
     return render_template("admin/post.html", form=form, type="编辑")
 
 
-@admin_bp.route("/delete_post")
-def delete_post():
-    post = Post.query.get_or_404(request.args.get("post_id"))
+@admin_bp.route("/post/<int:post_id>/delete", methods=['POST'])
+def delete_post(post_id):
+    post = Post.query.get_or_404(post_id)
     db.session.delete(post)
     db.session.commit()
     flash("删除成功", "success")
-    return redirect(url_for("admin.manage_posts"))
+    return redirect_back()
 
 
 @admin_bp.route("/manage_comments")
@@ -239,10 +239,10 @@ def manage_comments():
     )
 
 
-@admin_bp.route("/approve_comment")
-def approve_comment():
+@admin_bp.route("/comment/<int:comment_id>/approve")
+def approve_comment(comment_id):
     # 切换审核状态
-    comment = Comment.query.get_or_404(request.args.get("comment_id"))
+    comment = Comment.query.get_or_404(comment_id)
 
     if comment.reviewed:
         comment.reviewed = False
@@ -254,9 +254,9 @@ def approve_comment():
     return redirect_back()
 
 
-@admin_bp.route("/delete_comment")
-def delete_comment():
-    comment = Comment.query.get_or_404(request.args.get("comment_id"))
+@admin_bp.route("/comment/<int:comment_id>/delete", methods=['POST'])
+def delete_comment(comment_id):
+    comment = Comment.query.get_or_404(comment_id)
     db.session.delete(comment)
     db.session.commit()
     flash("删除成功", "success")
@@ -296,9 +296,9 @@ def add_link():
     return render_template("admin/link.html", form=form, type="添加")
 
 
-@admin_bp.route("/delete_link")
-def delete_link():
-    link = Link.query.get_or_404(request.args.get("link_id"))
+@admin_bp.route("/link/<int:link_id>/delete", methods=['POST'])
+def delete_link(link_id):
+    link = Link.query.get_or_404(link_id)
     db.session.delete(link)
     db.session.commit()
     flash("删除成功", "success")

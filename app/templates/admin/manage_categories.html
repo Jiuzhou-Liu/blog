@@ -24,10 +24,12 @@
                         <td>{{ category.name }}</td>
                         <td>{{ category.posts|length }}</td>
                         <td>
-                          <a class="btn btn-info btn-sm"
-                          href="{{ url_for('.edit_category', category_id=category.id) }}">编辑</a>
-                          <a class="btn btn-danger btn-sm"
-                          href="{{ url_for('.delete_category', category_id=category.id) }}" onclick="return confirm('确定删除吗?');">删除</a>
+                          <form class="inline" method="post" action="{{ url_for('.delete_category', category_id=category.id) }}">
+                            <a class="btn btn-info btn-sm" href="{{ url_for('.edit_category', category_id=category.id) }}">编辑</a> 
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('确定删除吗?');">删除</button>
+                        </form>
+                          
                         </td>
                       </tr>
                   {% endfor %}  

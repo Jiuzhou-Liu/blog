@@ -3,7 +3,7 @@ import click
 
 from flask import Flask
 from .settings import config
-from .extensions import db, toolbar, bootstrap, login_manager
+from .extensions import db, toolbar, bootstrap, login_manager, csrf
 from .blueprints import main, auth, admin
 from .models import Option, User, Category, Tag, Post, Comment, Link
 
@@ -26,6 +26,7 @@ def create_app(config_name=None):
     # toolbar.init_app(app)
     bootstrap.init_app(app)
     login_manager.init_app(app)
+    csrf.init_app(app)
 
     # 注册蓝图
     app.register_blueprint(main.main_bp)
@@ -66,6 +67,7 @@ def create_app(config_name=None):
             archives=archives,
             comments=comments,
             links=links,
+            review_comments_count=Comment.query.filter_by(reviewed=False).count()
         )
 
     # 创建Shell命令

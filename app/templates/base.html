@@ -31,7 +31,8 @@
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 分类 </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 {% for category in categories %}
-                  <a class="dropdown-item" href="{{ url_for('main.category', category_id=category.id) }}">{{ category.name }} <span class="float-right badge badge-light">{{ category.posts|length }}</span></a>   
+                  
+                  <a class="dropdown-item" href="{{ url_for('main.category', category_id=category.id) }}">{{ category.name }} <span class="float-right badge badge-light pt-2">{{ category.posts|length }}</span></a>   
                 {% endfor %}
               </div>
             </li>   
@@ -52,7 +53,7 @@
 
                     <a class="dropdown-item" href="{{ url_for('admin.manage_posts') }}">文章</a>
 
-                    <a class="dropdown-item" href="{{ url_for('admin.manage_comments') }}">评论</a>
+                    <a class="dropdown-item" style="" href="{{ url_for('admin.manage_comments') }}">评论{% if review_comments_count %}<span style="" class="float-right badge badge-light pt-2">{{ review_comments_count }}</span>{% endif %}</a>
 
                     <a class="dropdown-item" href="{{ url_for('admin.manage_links') }}">链接</a>     
                 </div>
