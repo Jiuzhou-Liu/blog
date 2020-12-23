@@ -190,7 +190,7 @@ def comment_post(post_id):  # 评论帖子或回复帖子中的评论
             content=form.content.data,
             ip=request.remote_addr,
         )
-        
+
         # 管理员发表的评论 或 评论审核被关闭
         if current_user.is_authenticated or not int(g.options["comment_review"]):
             comment.reviewed = True
@@ -210,19 +210,15 @@ def comment_post(post_id):  # 评论帖子或回复帖子中的评论
         else:
             flash("发表成功, 请等待审核", "success")
 
-        header = {
-            "Content-Type": "text/html; charset=utf-8",
-            "location": url_for("main.post", post_id=post_id),
-            }
-
+        response = make_response()
+        # response.mimetype = "text/html; charset=utf-8"
+        response.location = url_for("main.post", post_id=post_id)
+        response.status_code = 302
         if not current_user.is_authenticated:
-            header["Set-Cookie"] = [
-                "remember_author=" + form.author.data + "; Path=/",
-                "remember_mail=" + form.mail.data + "; Path=/",
-                "remember_url=" + form.url.data + "; Path=/",
-            ]
-
-        return '', 302, header
+            response.set_cookie("remember_author", form.author.data)
+            response.set_cookie("remember_mail", form.mail.data)
+            response.set_cookie("remember_url", form.url.data)
+        return response
 
 
 @main_bp.route("/comment/<int:comment_id>/reply", methods=["GET", "POST"])
