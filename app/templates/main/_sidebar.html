@@ -17,7 +17,7 @@
         <ul class="list-group" style="overflow-wrap: break-word;">
           <header class="list-group-item"><b>近期评论</b></header>
           {% for comment in comments %}
-          <li class="list-group-item list-group-item-action"><h6>{{ comment['author'] }}：</h6><a href="{{ url_for('main.post', post_id=comment.post_id) }}#{{ comment['id'] }}">{{ comment['content'] }}</a></li>
+          <li class="list-group-item list-group-item-action"><h6>{{ comment['author'] }}：</h6><a href="{{ url_for('main.post', post_id=comment.post_id) }}#comment_id-{{ comment['id'] }}">{{ comment['content'] }}</a></li>
           {% endfor %}
         </ul>
       </section>
