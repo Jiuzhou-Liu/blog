@@ -180,20 +180,19 @@ def comment_post(post_id):  # 评论帖子或回复帖子中的评论
 
     form = CommentForm()
 
-    if form.validate_on_submit() and (  # 未登录用户不能使用admin名称
-        (form.author.data != "admin") or current_user.is_authenticated
-    ):
+    if form.validate_on_submit():
+
         comment = Comment(
             post_id=post_id,
             author=form.author.data,
             mail=form.mail.data,
             url=form.url.data,
             content=form.content.data,
-            reviewed=False if int(g.options["comment_review"]) else True,
             ip=request.remote_addr,
         )
-
-        if current_user.is_authenticated:
+        
+        # 管理员发表的评论 或 评论审核被关闭
+        if current_user.is_authenticated or not int(g.options["comment_review"]):
             comment.reviewed = True
 
         # 被回复的评论id
@@ -212,10 +211,10 @@ def comment_post(post_id):  # 评论帖子或回复帖子中的评论
             flash("发表成功, 请等待审核", "success")
 
         header = {
+            "Content-Type": "text/html; charset=utf-8",
             "location": url_for("main.post", post_id=post_id),
-            # + "#comment_id-"
-            # + str(comment.id)
-        }
+            }
+
         if not current_user.is_authenticated:
             header["Set-Cookie"] = [
                 "remember_author=" + form.author.data + "; Path=/",
@@ -223,10 +222,7 @@ def comment_post(post_id):  # 评论帖子或回复帖子中的评论
                 "remember_url=" + form.url.data + "; Path=/",
             ]
 
-        return "", "302", header
-    else:
-        flash("评论失败，自己找原因", "danger")
-        return redirect(url_for("main.post", post_id=post_id))
+        return '', 302, header
 
 
 @main_bp.route("/comment/<int:comment_id>/reply", methods=["GET", "POST"])
