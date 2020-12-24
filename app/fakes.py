@@ -11,7 +11,7 @@ fake = Faker()
 def fake_option():
     db.session.add_all(
         [
-            Option(name="blog_title", value="空心的博客"),
+            Option(name="blog_title", value="空心's Blog"),
             Option(name="blog_sub_title", value="子标题"),
             Option(
                 name="blog_about",
@@ -35,7 +35,7 @@ def fake_option():
 
 
 def fake_user():
-    user = User(name="admin", mail="2267719005@qq.com") 
+    user = User(name="admin", mail="2267719005@qq.com")
     user.set_password("123456")
 
     db.session.add(user)
@@ -74,20 +74,21 @@ def fake_tags():
             # Tag(name="Nginx"),
             Tag(name="Docker"),
             Tag(name="Flask"),
+            Tag(name="Tornado"),
             Tag(name="Bootstrap"),
             Tag(name="jQuery"),
             Tag(name="Vue.js"),
             # Tag(name="Node.js"),
             # Tag(name="Electron"),
-            # Tag(name="小程序"),
+            Tag(name="小程序"),
+            # Tag(name="SQLite"),
             Tag(name="SQLAlchemy"),
             Tag(name="MongoEngine"),
             Tag(name="MySQL"),
-            # Tag(name="SQLite"),
             Tag(name="MongoDB"),
             Tag(name="Redis"),
             Tag(name="网络编程"),
-            # Tag(name="多线程"),
+            Tag(name="多线程"),
             # Tag(name="消息队列"),
         ]
     )

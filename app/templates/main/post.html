@@ -115,7 +115,7 @@
                             <p>上一篇：</p>
                             <p><a href="{{ url_for('.post', post_id=prev_post.id) }}">{{ prev_post.title }}</a></p>
                         {% else %}
-                            <p>上一篇：没有了</p>
+                            <p>上一篇：</p><p>没有了</p>
                         {% endif %}
                     
 
@@ -124,7 +124,7 @@
                             <p>下一篇：</p>
                             <p><a href="{{ url_for('.post', post_id=next_post.id) }}">{{ next_post.title }}</a></p>
                         {% else %}
-                            <p>下一篇：没有了</p>
+                            <p>下一篇：</p><p>没有了</p>
                         {% endif %}
                     
                     
