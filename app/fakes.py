@@ -66,39 +66,42 @@ def fake_tags():
         [
             Tag(name="资源分享"),
             Tag(name="经验分享"),
-            Tag(name="原创程序"),
             
             Tag(name="Autohotkey"),
             
             Tag(name="VS Code"),
             Tag(name="Git"),
             Tag(name="Docker"),
-            Tag(name="Shell"),
-            Tag(name="Nginx"),
 
             Tag(name="网络爬虫"),
-            
+
             Tag(name="Flask"),
+            Tag(name="RESTful API"),
             Tag(name="Tornado"),
+            
             Tag(name="Bootstrap"),
             Tag(name="jQuery"),
             Tag(name="Vue.js"),
-            Tag(name="小程序"),
-            
-            Tag(name="Node.js"),
-            Tag(name="Electron"),
-            
+
+            Tag(name="PyQt5"),
+             
             Tag(name="SQLAlchemy"),
-            Tag(name="MongoEngine"),
-            Tag(name="SQLite"),
             Tag(name="MySQL"),
+            Tag(name="MongoEngine"),
             Tag(name="MongoDB"),
             Tag(name="Redis"),
             
+            # Tag(name="Shell"),
+            # Tag(name="Nginx"),
+            # Tag(name="小程序"),
+            # Tag(name="Node.js"),
+            # Tag(name="Electron"),
             # Tag(name="网络编程"),
             # Tag(name="多线程"),
             # Tag(name="正则表达式"),
             # Tag(name="消息队列"),
+
+
         ]
     )
 
