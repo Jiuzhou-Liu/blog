@@ -147,7 +147,13 @@
 {% block scripts %}
 {{ super() }}
     <script src="https://cdn.staticfile.org/prism/0.0.1/prism.min.js"></script>
-    <script type="text/javascript">
-      $('pre').addClass("line-numbers").css("white-space", "pre-wrap");
-    </script>
+<script type="text/javascript">
+	(function(){
+		var pres = document.querySelectorAll('pre');
+		var lineNumberClassName = 'line-numbers';
+		pres.forEach(function (item, index) {
+			item.className = item.className == '' ? lineNumberClassName : item.className + ' ' + lineNumberClassName;
+		});
+	})();
+</script>
 {% endblock %}
