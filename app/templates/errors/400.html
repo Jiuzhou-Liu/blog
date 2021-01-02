@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}404 未找到{% endblock %}
+
+{% block main %}
+    <h3>请求错误</h3>
+    <p>{{ description|default('请求错误') }}</p>
+{% endblock %} 

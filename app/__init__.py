@@ -1,7 +1,7 @@
 import os
 import click
 
-from flask import Flask, g
+from flask import Flask, g, render_template
 from .settings import config
 from .extensions import db, toolbar, bootstrap, login_manager, csrf, moment
 from .blueprints import main, auth, admin
@@ -10,6 +10,7 @@ from .models import Option, User, Category, Tag, Post, Comment, Link
 from sqlalchemy.sql.expression import func
 from sqlalchemy import extract
 
+from flask_wtf.csrf import CSRFError
 
 def create_app(config_name=None):
     if config_name is None:
@@ -34,6 +35,23 @@ def create_app(config_name=None):
     app.register_blueprint(auth.auth_bp, url_prefix="/auth")
     app.register_blueprint(admin.admin_bp, url_prefix="/admin")
 
+    # 错误处理
+    @app.errorhandler(400)
+    def bad_request(e):
+        return render_template('errors/400.html'), 400
+
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template('errors/404.html'), 404
+
+    @app.errorhandler(500)
+    def internal_server_error(e):
+        return render_template('errors/500.html'), 500
+
+    @app.errorhandler(CSRFError)
+    def handle_csrf_error(e):
+        return render_template('errors/400.html', description=e.description), 400
+
     # 每个请求之前
     @app.before_request
     def get_options():
@@ -49,7 +67,11 @@ def create_app(config_name=None):
         users = User.query.all()
         categories = Category.query.all()
         tags = Tag.query.order_by(Tag.name).all()
-        comments = Comment.query.filter_by(reviewed=True).order_by(Comment.created.desc()).limit(5)
+        comments = (
+            Comment.query.filter_by(reviewed=True)
+            .order_by(Comment.created.desc())
+            .limit(5)
+        )
         links = Link.query.all()
 
         archives = (

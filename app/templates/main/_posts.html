@@ -7,7 +7,7 @@
           <h4><a href="{{ url_for('main.post', post_id=post.id) }}">{{ post['title'] }}</a></h4>
         </header>
         <div class="content">
-          <p>{{ post['content']|striptags|truncate }}</p>
+          <p>{{ post['content_html']|striptags|truncate }}</p>
         </div>
         <footer class="text-muted">
           <small>

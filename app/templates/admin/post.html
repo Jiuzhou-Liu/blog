@@ -1,15 +1,54 @@
 {% extends 'base.html' %}
-{% from 'bootstrap/form.html' import render_form %}
+{% from 'bootstrap/form.html' import render_field %}
 
 {% block title %}{{ type }}文章{% endblock %}
+
+{% block head %}
+{{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static',filename='editormd/css/editormd.css') }}"/>
+{% endblock %}
 
 {% block main %}
     <div class="row">
         <div class="col-md-12 p-3"> 
             <header class="p-3"><h3>{{ type }}文章</h3></header>
-            <div class="content p-3">{{ render_form(form) }}</div>
+            <div class="content p-3">
+                <form action method="post">
+                    {{ form.csrf_token }}
+                    {{ render_field(form.title) }}
+                    {{ render_field(form.category) }}
+                    {{ render_field(form.tags) }}
+                    <div class="form-group required">
+                        <label class="form-control-label" for="content">内容</label>
+                        <div id="fancy-editormd">
+                            {{ form.content(style="display:none;") }}
+                        </div>
+                    </div>
+                    {{ render_field(form.submit, class='btn btn-primary btn-md') }}
+                </form>
+            </div>
+
         </div>
     </div>
 {% endblock %} 
+
+{% block scripts %}
+{{ super() }}
+<script src="{{ url_for('static',filename='editormd/editormd.min.js') }}"></script>
+<script type="text/javascript">
+    $(function () {
+        editormd("fancy-editormd", {
+            // width: "100%", 请不要添加
+            height: 640,
+            syncScrolling: "single",
+            theme : "dark",
+            previewTheme : "dark",
+            editorTheme : "monokai",
+            path: "{{ url_for('static',filename='editormd/lib/') }}",
+            saveHTMLToTextarea : true
+        });
+    });
+</script>
+{% endblock %}
 
 

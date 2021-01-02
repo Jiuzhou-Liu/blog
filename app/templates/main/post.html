@@ -4,6 +4,13 @@
 
 {% block title %}{{ post.title }}{% endblock %}
 
+{% block head %}
+{{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static',filename='editormd/css/editormd.css') }}"/>
+    <link href="https://cdn.bootcdn.net/ajax/libs/prism/1.22.0/themes/prism-okaidia.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/prism/1.22.0/plugins/line-numbers/prism-line-numbers.css" rel="stylesheet">
+{% endblock %}
+
 {% block main %}
     <div class="row">
         <div class="col-md-8">
@@ -34,7 +41,7 @@
                     </p>
                     {% endif %}
             </header>
-            <div class="" style="overflow-wrap: break-word;" class="content">{{ post.content }}</div>
+            <div class="content markdown-body" style="overflow-wrap: break-word;">{{ post['content_html']|safe }}</div>
             </article>
         {% if post_comments %}
             <section class="my-3 comment" id="comments">
@@ -136,3 +143,11 @@
         {% include 'main/_sidebar.html' %}
     </div>
 {% endblock %} 
+
+{% block scripts %}
+{{ super() }}
+    <script src="https://cdn.staticfile.org/prism/0.0.1/prism.min.js"></script>
+    <script type="text/javascript">
+      $('pre').addClass("line-numbers").css("white-space", "pre-wrap");
+    </script>
+{% endblock %}

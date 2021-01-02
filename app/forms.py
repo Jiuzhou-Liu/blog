@@ -66,7 +66,7 @@ class CommentForm(FlaskForm):
         "网站", validators=[Optional(), URL()], render_kw={"placeholder": "http://"}
     )
     content = TextAreaField(
-        "内容", validators=[DataRequired()], render_kw={"placeholder": "支持Markdown"}
+        "内容", validators=[DataRequired()], render_kw={"placeholder": "请勿发表垃圾评论"}
     )
     submit = SubmitField("提交")
 

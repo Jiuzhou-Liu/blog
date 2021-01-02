@@ -27,7 +27,9 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32), unique=True)
 
-    posts = db.relationship("Post", back_populates="category", cascade="all, delete-orphan")
+    posts = db.relationship(
+        "Post", back_populates="category", cascade="all, delete-orphan"
+    )
 
 
 relationshipn_table = db.Table(
@@ -50,6 +52,7 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(64))
     content = db.Column(db.Text)
+    content_html = db.Column(db.Text)
     created = db.Column(db.DateTime, default=datetime.utcnow, index=True)
     read_count = db.Column(db.Integer, default=0)
 

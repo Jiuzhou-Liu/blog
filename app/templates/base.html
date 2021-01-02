@@ -3,17 +3,19 @@
 <!DOCTYPE html>
 <html lang="zh-Hans" class="h-100">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
-    <!--<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">-->
-    <style>
-      body {
-        background-color:#f2f2f7; 
-        font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
-      }
-    </style>
-    <title>{% block title %}{% endblock %} - {{ options['blog_title'] }}</title>
+    {% block head %}
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+      <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
+      <!--<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">-->
+      <style>
+        body {
+          background-color:#f2f2f7; 
+          font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
+        }
+      </style>
+      <title>{% block title %}{% endblock %} - {{ options['blog_title'] }}</title>
+    {% endblock head %}
   </head>
 
   <body class="d-flex flex-column h-100" style="padding-top: 5rem"> 
@@ -96,10 +98,11 @@
       {% endblock %}
     </footer>
    
-    <script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/js/bootstrap.bundle.js"></script>
-    {{ moment.include_moment() }}
-    {{ moment.locale(auto_detect=True) }}
-    
+    {% block scripts %}
+      <script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/js/bootstrap.bundle.js"></script>
+      {{ moment.include_moment() }}
+      {{ moment.locale(auto_detect=True) }}
+    {% endblock %}
   </body>
 </html>

@@ -48,6 +48,7 @@ def fake_categories():
         [
             Category(name="未分类"),
             Category(name="杂谈"),
+            Category(name="编程"),
             Category(name="Windows"),
             Category(name="Linux"),
             Category(name="Python"),
@@ -73,8 +74,6 @@ def fake_tags():
             Tag(name="Git"),
             Tag(name="Docker"),
 
-            Tag(name="网络爬虫"),
-
             Tag(name="Flask"),
             Tag(name="RESTful API"),
             Tag(name="Tornado"),
@@ -90,17 +89,6 @@ def fake_tags():
             Tag(name="MongoEngine"),
             Tag(name="MongoDB"),
             Tag(name="Redis"),
-            
-            # Tag(name="Shell"),
-            # Tag(name="Nginx"),
-            # Tag(name="小程序"),
-            # Tag(name="Node.js"),
-            # Tag(name="Electron"),
-            # Tag(name="网络编程"),
-            # Tag(name="多线程"),
-            # Tag(name="正则表达式"),
-            # Tag(name="消息队列"),
-
 
         ]
     )
@@ -109,10 +97,11 @@ def fake_tags():
 
 
 def fake_posts():
-    for i in range(50):
+    for i in range(3):
         post = Post(
             title=fake.sentence(),
             content=fake.text(1200),
+            content_html=fake.text(1200),
             category=Category.query.get(random.randint(1, Category.query.count())),
             created=fake.date_time_this_year(),
         )
@@ -160,9 +149,9 @@ def fake_links():
 
     db.session.add_all(
         [
-            Link(name="我的Github", url="https://github.com/pythoneer-ljz/"),
-            Link(name="我的知乎", url="https://www.zhihu.com/people/liu-jiu-zhou-32-18"),
-            Link(name="我的网易云", url="https://music.163.com/#/user/home?id=484667076"),
+            Link(name="Github", url="https://github.com/pythoneer-ljz/"),
+            Link(name="知乎", url="https://www.zhihu.com/people/liu-jiu-zhou-32-18"),
+            Link(name="网易云", url="https://music.163.com/#/user/home?id=484667076"),
         ]
     )
     db.session.commit()

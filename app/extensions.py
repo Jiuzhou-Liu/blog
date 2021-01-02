@@ -5,6 +5,7 @@ from flask_login import LoginManager
 from flask_wtf import CSRFProtect
 from flask_moment import Moment
 
+
 db = SQLAlchemy()
 toolbar = DebugToolbarExtension()
 bootstrap = Bootstrap()

@@ -34,6 +34,7 @@ admin_bp = Blueprint("admin", __name__)
 def login_protect():
     pass
 
+
 @admin_bp.route("/option", methods=["GET", "POST"])
 def option():
     form = OptionForm()
@@ -51,7 +52,7 @@ def option():
         blog_footer.value = form.blog_footer.data
         sidebar_comment.value = form.sidebar_comment.data
         comment_review.value = form.comment_review.data
-        
+
         db.session.commit()
         flash("设置保存成功", "success")
         return redirect(url_for("main.index"))
@@ -96,7 +97,7 @@ def add_category():
     return render_template("admin/category.html", form=form, type="添加")
 
 
-@admin_bp.route("/category/<int:category_id>/delete", methods=['POST'])
+@admin_bp.route("/category/<int:category_id>/delete", methods=["POST"])
 def delete_category(category_id):
     category = Category.query.get_or_404(category_id)
     db.session.delete(category)
@@ -136,7 +137,7 @@ def add_tag():
     return render_template("admin/tag.html", form=form, type="添加")
 
 
-@admin_bp.route("/tag/<int:tag_id>/delete", methods=['POST'])
+@admin_bp.route("/tag/<int:tag_id>/delete", methods=["POST"])
 def delete_tag(tag_id):
     tag = Tag.query.get_or_404(tag_id)
     db.session.delete(tag)
@@ -164,19 +165,26 @@ def write_post():
     if form.validate_on_submit():
         title = form.title.data
         content = form.content.data
+        content_html = request.form["fancy-editormd-html-code"]
         category = Category.query.get(form.category.data)
         tags = []
         for tag_id in form.tags.data:
             tag = Tag.query.get_or_404(tag_id)
             tags.append(tag)
 
-        post = Post(title=title, content=content, category=category, tags=tags)
+        post = Post(
+            title=title,
+            content=content,
+            content_html=content_html,
+            category=category,
+            tags=tags,
+        )
 
         db.session.add(post)
         db.session.commit()
         flash("文章已发布", "success")
         return redirect(url_for("main.post", post_id=post.id))
-    return render_template("admin/write_post.html", form=form)
+    return render_template("admin/post.html", form=form, type="写")
 
 
 @admin_bp.route("/edit_post/<int:post_id>", methods=["GET", "POST"])
@@ -186,6 +194,7 @@ def edit_post(post_id):
     if form.validate_on_submit():
         post.title = form.title.data
         post.content = form.content.data
+        post.content_html = request.form["fancy-editormd-html-code"]
         post.category_id = form.category.data
         tags = []
         for tag_id in form.tags.data:
@@ -208,7 +217,7 @@ def edit_post(post_id):
     return render_template("admin/post.html", form=form, type="编辑")
 
 
-@admin_bp.route("/post/<int:post_id>/delete", methods=['POST'])
+@admin_bp.route("/post/<int:post_id>/delete", methods=["POST"])
 def delete_post(post_id):
     post = Post.query.get_or_404(post_id)
     db.session.delete(post)
@@ -222,7 +231,11 @@ def manage_comments():
     page = request.args.get("page", 1, type=int)
 
     if request.args.get("filter") == "review":
-        pagination = Comment.query.filter_by(reviewed=False).order_by(Comment.created.desc()).paginate(page, per_page=10)
+        pagination = (
+            Comment.query.filter_by(reviewed=False)
+            .order_by(Comment.created.desc())
+            .paginate(page, per_page=10)
+        )
     elif request.args.get("filter") == "admin":
         pagination = (
             Comment.query.filter_by(author="admin")
@@ -230,8 +243,9 @@ def manage_comments():
             .paginate(page, per_page=10)
         )
     else:
-        pagination = Comment.query.order_by(Comment.created.desc()).paginate(page, per_page=10)
-
+        pagination = Comment.query.order_by(Comment.created.desc()).paginate(
+            page, per_page=10
+        )
 
     return render_template(
         "admin/manage_comments.html",
@@ -243,7 +257,7 @@ def manage_comments():
     )
 
 
-@admin_bp.route("/comment/<int:comment_id>/approve", methods=['POST'])
+@admin_bp.route("/comment/<int:comment_id>/approve", methods=["POST"])
 def approve_comment(comment_id):
     # 切换审核状态
     comment = Comment.query.get_or_404(comment_id)
@@ -258,7 +272,7 @@ def approve_comment(comment_id):
     return redirect_back()
 
 
-@admin_bp.route("/comment/<int:comment_id>/delete", methods=['POST'])
+@admin_bp.route("/comment/<int:comment_id>/delete", methods=["POST"])
 def delete_comment(comment_id):
     comment = Comment.query.get_or_404(comment_id)
     db.session.delete(comment)
@@ -300,7 +314,7 @@ def add_link():
     return render_template("admin/link.html", form=form, type="添加")
 
 
-@admin_bp.route("/link/<int:link_id>/delete", methods=['POST'])
+@admin_bp.route("/link/<int:link_id>/delete", methods=["POST"])
 def delete_link(link_id):
     link = Link.query.get_or_404(link_id)
     db.session.delete(link)
