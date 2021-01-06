@@ -1,8 +1,8 @@
+app/__pycache__/
+app/blueprints/__pycache__/
 /.env
-/.flaskenv
 /.idea
 /.vscode
 /data-dev.db
-app/__pycache__/
-app/blueprints/__pycache__/
+/instance/
 
