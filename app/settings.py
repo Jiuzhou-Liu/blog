@@ -16,8 +16,6 @@ class BaseConfig(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_RECORD_QUERIES = True
 
-    BLUELOG_POST_PER_PAGE = 10
-
 
 class DevelopmentConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = prefix + os.path.join(basedir, "data-dev.db")
@@ -28,7 +26,8 @@ class TestingConfig(BaseConfig):
 
 
 class ProductionConfig(BaseConfig):
-    pass
+    SQLALCHEMY_DATABASE_URI = prefix + os.path.join(basedir, "instance/data.db")
+    SQLALCHEMY_POOL_RECYCLE = 280
 
 
 config = {

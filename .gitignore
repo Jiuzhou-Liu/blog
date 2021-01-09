@@ -1,8 +1,11 @@
 app/__pycache__/
 app/blueprints/__pycache__/
+*.pyc
 /.env
 /.idea
 /.vscode
+.pytest_cache/
+.coverage
 /data-dev.db
 /instance/
 
