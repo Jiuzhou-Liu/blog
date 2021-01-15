@@ -6,6 +6,5 @@ app/blueprints/__pycache__/
 /.vscode
 .pytest_cache/
 .coverage
-/data-dev.db
 /instance/
 

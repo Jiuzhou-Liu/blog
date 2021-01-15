@@ -1,7 +1,7 @@
 import random
 from faker import Faker
 from sqlalchemy.exc import IntegrityError
-from .models import Option, User, Category, Tag, Post, Comment, Link
+from .models import Option, Page, User, Category, Tag, Post, Comment, Link
 from .extensions import db
 
 
@@ -14,21 +14,40 @@ def fake_option():
             Option(name="blog_title", value="空心's Blog"),
             Option(name="blog_sub_title", value="子标题"),
             Option(
-                name="blog_about",
-                value="""<pre><address>
+                name="blog_navbar",
+                value="""\
+                <a href="https://github.com/pythoneer-ljz/"><svg class="octicon octicon-mark-github v-align-middle" height="32" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg></a>
+                """,
+            ),
+            Option(
+                name="blog_footer",
+                value="""\
+                <p><small><a target="_blank" href="http://beian.miit.gov.cn">湘ICP备17017294号</a><br/>
+            <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=43012102000215"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAMAAAC6V+0/AAABjFBMVEVHcEzoxWzs04visWL++9725r7dpFXitWH89t337Lr52Ifov3f25qPcsX7gqlb06Zzu46rewXLlvHCdaFjvvl/crGrgvov387jz6ZLt3oDkvFnTk3DKhFvZr4LDfz7oxnzv2X//+dD/74ati3q0lH7Rrnbou1Doulr/1ljVPCLqv1fuzGbVHhjbSScFAWMAAXgBAW3ryFzksVHWj0nSBQnlmDpzd4Dpx2PdmEbrsEnw13TrwWDdn0U8GTzVazK5kVqYeljIIhDMAALKPSO9BA79xU3UxXXrXyNtf4/90GjqcDKRinm+TiUABn756XDepEz1x1f74mzVkjzThT3TLhyrq4LjrUr8lzlRNlHdhDX1fy6ZXzNdXG9NB0TXYTHQFg3XdTjyy27pgj69qXHekET/ulXBvIN0Y2HPuX+clYT2qjwZN5DuvlDx02nYnljNrFJWTm/JWSrZAAZgHlCxDg79KwoAG45pAjaEj5n9LRTEazOBWDqEaUriqVfbbTc2Gk2njVnOeDq1gD8ACJEMcLh/AAAAJnRSTlMA7JHrCGHK/hxBusIqreg9f/XQ+dLgnAKr4fQUXUic++xMvtHLbxvU4Y4AAAFpSURBVBjTY2CAAA5WFWVWDnEGJMDJKxxdXeMgzKuIEGOxt42ucvdiD7W1Z4GJcXBHOESZaOqahIdGcEFFeQTrY6J0dEJ04108zeoZecCC/N6+De4mIfHxmk7uaQbeYEEOEW/9Jt0iHU1NHSdNNwMzJZAbVLMyfe2jTAqDtFLivdwMMjUEgCrFTDOa0119nO0S6owD0/XTssSAKkUjE7MNfJJ0neM0veL0sq1MRYEq+RpTPfRLSuN8EpIqXQw8XIOBguK8Np4ZZbEljo6Ous7l+hme6kxAQe6UWs8KAz292GI9A30zDfYwbnEGcfk8Y9PEDAeP5PyYAjNtUwsjBaCZrOr+xnYBGhqulhp+GpHGRoacINezSmkFB2mrG6lr51oYazNyQsJN1NBQXcvQWlvLRt3KnI8fHKhcflbsRuph1moW/urq5n4SkNBkklILyLFUs9QKUDOXFICGvri0jBwbGx8zGzeTLFgIAGesR4U7iOtUAAAAAElFTkSuQmCC"/>  湘公网安备 43012102000215号</a>
+          </small></p>
+          """,
+            ),
+            Option(name="sidebar_comment", value=False),
+            Option(name="comment_review", value=False),
+        ]
+    )
+    db.session.commit()
+
+
+def fake_pages():
+
+    db.session.add_all(
+        [
+            Page(
+                title="关于",
+                slug="about",
+                content="""<pre><address>
 空心的个人博客
 地区：湖南衡阳
 邮箱：<a href="mailto:2267719005@qq.com">2267719005@qq.com</a>
 </address></pre>""",
+                created=fake.date_time_this_year(),
             ),
-            Option(
-                name="blog_footer",
-                value="""<p><small><a target="_blank" href="http://beian.miit.gov.cn">湘ICP备17017294号</a><br/>
-            <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=43012102000215"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAMAAAC6V+0/AAABjFBMVEVHcEzoxWzs04visWL++9725r7dpFXitWH89t337Lr52Ifov3f25qPcsX7gqlb06Zzu46rewXLlvHCdaFjvvl/crGrgvov387jz6ZLt3oDkvFnTk3DKhFvZr4LDfz7oxnzv2X//+dD/74ati3q0lH7Rrnbou1Doulr/1ljVPCLqv1fuzGbVHhjbSScFAWMAAXgBAW3ryFzksVHWj0nSBQnlmDpzd4Dpx2PdmEbrsEnw13TrwWDdn0U8GTzVazK5kVqYeljIIhDMAALKPSO9BA79xU3UxXXrXyNtf4/90GjqcDKRinm+TiUABn756XDepEz1x1f74mzVkjzThT3TLhyrq4LjrUr8lzlRNlHdhDX1fy6ZXzNdXG9NB0TXYTHQFg3XdTjyy27pgj69qXHekET/ulXBvIN0Y2HPuX+clYT2qjwZN5DuvlDx02nYnljNrFJWTm/JWSrZAAZgHlCxDg79KwoAG45pAjaEj5n9LRTEazOBWDqEaUriqVfbbTc2Gk2njVnOeDq1gD8ACJEMcLh/AAAAJnRSTlMA7JHrCGHK/hxBusIqreg9f/XQ+dLgnAKr4fQUXUic++xMvtHLbxvU4Y4AAAFpSURBVBjTY2CAAA5WFWVWDnEGJMDJKxxdXeMgzKuIEGOxt42ucvdiD7W1Z4GJcXBHOESZaOqahIdGcEFFeQTrY6J0dEJ04108zeoZecCC/N6+De4mIfHxmk7uaQbeYEEOEW/9Jt0iHU1NHSdNNwMzJZAbVLMyfe2jTAqDtFLivdwMMjUEgCrFTDOa0119nO0S6owD0/XTssSAKkUjE7MNfJJ0neM0veL0sq1MRYEq+RpTPfRLSuN8EpIqXQw8XIOBguK8Np4ZZbEljo6Ous7l+hme6kxAQe6UWs8KAz292GI9A30zDfYwbnEGcfk8Y9PEDAeP5PyYAjNtUwsjBaCZrOr+xnYBGhqulhp+GpHGRoacINezSmkFB2mrG6lr51oYazNyQsJN1NBQXcvQWlvLRt3KnI8fHKhcflbsRuph1moW/urq5n4SkNBkklILyLFUs9QKUDOXFICGvri0jBwbGx8zGzeTLFgIAGesR4U7iOtUAAAAAElFTkSuQmCC"/>  湘公网安备 43012102000215号</a>
-          </small></p>""",
-            ),
-            Option(name="sidebar_comment", value=False),
-            Option(name="comment_review", value=False),
         ]
     )
     db.session.commit()
@@ -47,13 +66,10 @@ def fake_categories():
     db.session.add_all(
         [
             Category(name="未分类"),
-            Category(name="杂谈"),
             Category(name="编程"),
             Category(name="Windows"),
             Category(name="Linux"),
             Category(name="Python"),
-            Category(name="Golang"),
-            Category(name="HTML/CSS"),
             Category(name="JavaScript"),
             Category(name="Database"),
         ]
@@ -65,31 +81,17 @@ def fake_categories():
 def fake_tags():
     db.session.add_all(
         [
-            Tag(name="资源分享"),
-            Tag(name="经验分享"),
-            
+            Tag(name="资源"),
+            Tag(name="经验"),
+            Tag(name="教程"),
             Tag(name="Autohotkey"),
-            
-            Tag(name="VS Code"),
-            Tag(name="Git"),
-            Tag(name="Docker"),
-
             Tag(name="Flask"),
-            Tag(name="RESTful API"),
-            Tag(name="Tornado"),
-            
+            Tag(name="Scrapy"),
+            Tag(name="PyQt"),
             Tag(name="Bootstrap"),
-            Tag(name="jQuery"),
-            Tag(name="Vue.js"),
-
-            Tag(name="PyQt5"),
-             
             Tag(name="SQLAlchemy"),
             Tag(name="MySQL"),
-            Tag(name="MongoEngine"),
-            Tag(name="MongoDB"),
             Tag(name="Redis"),
-
         ]
     )
 
@@ -97,6 +99,7 @@ def fake_tags():
 
 
 def fake_posts():
+    """
     for i in range(3):
         post = Post(
             title=fake.sentence(),
@@ -113,6 +116,20 @@ def fake_posts():
         post.tags.append(tag)
 
         db.session.add(post)
+    """
+
+    db.session.add_all(
+        [
+            Post(
+                title="世界，您好！",
+                content="欢迎使用blog。这是您的第一篇文章。编辑或删除它，然后开始写作吧！",
+                content_html="",
+                user=User.query.get(1),
+                category=Category.query.get(1),
+                created=fake.date_time_this_year(),
+            ),
+        ]
+    )
     db.session.commit()
 
 
@@ -149,7 +166,6 @@ def fake_links():
 
     db.session.add_all(
         [
-            Link(name="Github", url="https://github.com/pythoneer-ljz/"),
             Link(name="知乎", url="https://www.zhihu.com/people/liu-jiu-zhou-32-18"),
             Link(name="网易云", url="https://music.163.com/#/user/home?id=484667076"),
         ]

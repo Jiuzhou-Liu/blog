@@ -1,15 +1,15 @@
 {% extends 'base.html' %} 
 
-{% block title %}关于{% endblock %}
+{% block title %}{{ page.title }}{% endblock %}
 
 {% block main %}
     <div class="row">
         <div class="col-md-9">
             <section class="">
                 <header class="p-3">
-                    <h3>关于</h3> 
+                    <h3>{{ page.title }}</h3> 
                 </header>
-                <div class="content bg-white border my-3 p-3">{{ options['blog_about']|safe }}</div>  
+                <div class="content bg-white border my-3 p-3">{{ page.content|safe }}</div>  
             </section>
         </div>
         {% include 'main/_sidebar.html' %}

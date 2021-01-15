@@ -9,12 +9,22 @@ class Option(db.Model):
     name = db.Column(db.String(32))
     value = db.Column(db.Text)
 
+class Page(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(64))
+    slug = db.Column(db.String(32), unique=True)
+    content = db.Column(db.Text)
+    created = db.Column(db.DateTime, default=datetime.utcnow, index=True)
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32))
     password = db.Column(db.String(64))
     mail = db.Column(db.String(150))
+
+    posts = db.relationship(
+        "Post", back_populates="user", cascade="all, delete-orphan"
+    )
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
@@ -56,8 +66,10 @@ class Post(db.Model):
     created = db.Column(db.DateTime, default=datetime.utcnow, index=True)
     read_count = db.Column(db.Integer, default=0)
 
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     category_id = db.Column(db.Integer, db.ForeignKey("category.id"))
-
+ 
+    user = db.relationship("User", back_populates="posts")
     category = db.relationship("Category", back_populates="posts")
     comments = db.relationship(
         "Comment", back_populates="post", cascade="all, delete-orphan"

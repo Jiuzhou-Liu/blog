@@ -11,7 +11,7 @@ from flask import (
     abort,
     make_response,
 )
-from ..models import Option, User, Category, Tag, Post, Comment, Link
+from ..models import Option, Page, User, Category, Tag, Post, Comment, Link
 from ..forms import (
     LoginForm,
     PostForm,
@@ -39,10 +39,27 @@ def index():
     )
 
 
-@main_bp.route("/about")
-def about():
-    return render_template("main/about.html")
+@main_bp.route("/page/<string:slug>")
+def page(slug):
+    page = Page.query.filter(Page.slug == slug).first_or_404()
+    return render_template("main/page.html", page=page,)
 
+
+@main_bp.route("/user/<int:user_id>")
+def user(user_id):
+    user = User.query.get_or_404(user_id)
+    pagination = (
+        Post.query.with_parent(user)
+        .order_by(Post.created.desc())
+        .paginate(per_page=10)
+    )
+    return render_template(
+        "main/archive.html",
+        type="作者",
+        archive=user,
+        posts=pagination.items,
+        pagination=pagination,
+    )
 
 @main_bp.route("/category/<int:category_id>")
 def category(category_id):

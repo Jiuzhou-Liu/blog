@@ -28,42 +28,18 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             {{ render_nav_item('main.index','首页') }}
-            {{ render_nav_item('main.about','关于') }}
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 分类 </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                {% for category in categories %}
+
+
+                {% for page in pages %}
+                {{ render_nav_item('main.page', page.title, slug=page.slug) }}
                   
-                  <a class="dropdown-item" href="{{ url_for('main.category', category_id=category.id) }}">{{ category.name }} <span class="float-right badge badge-light pt-2">{{ category.posts|length }}</span></a>   
                 {% endfor %}
-              </div>
-            </li>   
+ 
           </ul>
 
           <ul class="navbar-nav ml-auto">   
-            {% if current_user.is_authenticated %}      
-              {{ render_nav_item('admin.write_post','写文章',use_li=True) }}
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"  role="button" data-toggle="dropdown" aria-haspopup="true"  aria-expanded="false"> 管理 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-                    <a class="dropdown-item" href="{{ url_for('admin.option') }}">设置</a>
-
-                    <a class="dropdown-item" href="{{ url_for('admin.manage_categories') }}">分类</a>
-
-                    <a class="dropdown-item" href="{{ url_for('admin.manage_tags') }}">标签</a>
-
-                    <a class="dropdown-item" href="{{ url_for('admin.manage_posts') }}">文章</a>
-
-                    <a class="dropdown-item" style="" href="{{ url_for('admin.manage_comments') }}">评论{% if review_comments_count %}<span style="" class="float-right badge badge-light pt-2">{{ review_comments_count }}</span>{% endif %}</a>
-
-                    <a class="dropdown-item" href="{{ url_for('admin.manage_links') }}">链接</a>     
-                </div>
-              </li>
-              <li class="nav-item nav-link"><a href="{{ url_for('auth.logout')}}  ">注销</a></li>
-            {% else %}
-              <li class="nav-item nav-link"><a href="{{ url_for('auth.login') }} ">登录</a></li>
-            {% endif %}
+            {{ options['blog_navbar']|safe }}
+            
          
         </ul>
 

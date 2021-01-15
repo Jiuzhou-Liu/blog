@@ -5,7 +5,7 @@ from flask import Flask, g, render_template
 from .settings import config
 from .extensions import db, toolbar, bootstrap, login_manager, csrf, moment
 from .blueprints import main, auth, admin
-from .models import Option, User, Category, Tag, Post, Comment, Link
+from .models import Option, Page, User, Category, Tag, Post, Comment, Link
 
 from sqlalchemy.sql.expression import func
 from sqlalchemy import extract
@@ -21,6 +21,9 @@ def create_app(config_name=None):
 
     # 导入配置
     app.config.from_object(config[config_name])
+
+    app.jinja_env.trim_blocks = True
+    app.jinja_env.lstrip_blocks = True
 
     # 初始化扩展
     db.init_app(app)
@@ -63,7 +66,7 @@ def create_app(config_name=None):
     # 创建模板上下文
     @app.context_processor
     def make_template_context():
-
+        pages = Page.query.all()
         users = User.query.all()
         categories = Category.query.all()
         tags = Tag.query.order_by(Tag.name).all()
@@ -89,6 +92,7 @@ def create_app(config_name=None):
 
         return dict(
             options=g.options,
+            pages=pages,
             users=users,
             categories=categories,
             tags=tags,
@@ -118,6 +122,7 @@ def create_app(config_name=None):
         """生成虚拟数据"""
         from .fakes import (
             fake_option,
+            fake_pages,
             fake_user,
             fake_categories,
             fake_tags,
@@ -131,6 +136,9 @@ def create_app(config_name=None):
 
         click.echo("Generating blog information")
         fake_option()
+
+        click.echo("Generating pages")
+        fake_pages()
 
         click.echo("Generating the administrator...")
         fake_user()
