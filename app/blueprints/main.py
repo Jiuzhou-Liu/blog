@@ -188,6 +188,9 @@ def post(post_id):
 @main_bp.route("/post/random")
 def random_post():
     post = Post.query
+    if not post.count():
+        flash('没有找到文章','info')
+        return redirect(url_for("main.index"))
     i = random.randint(0, post.count() - 1)
     return redirect(url_for("main.post", post_id=post[i].id))
 

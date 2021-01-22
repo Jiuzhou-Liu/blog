@@ -122,8 +122,8 @@ def fake_posts():
         [
             Post(
                 title="世界，您好！",
-                content="欢迎使用blog。这是您的第一篇文章。编辑或删除它，然后开始写作吧！",
-                content_html="",
+                content="欢迎使用Onelog，这是您的第一篇文章，编辑或删除它，然后开始写作吧！",
+                content_html="欢迎使用Onelog，这是您的第一篇文章，编辑或删除它，然后开始写作吧！",
                 user=User.query.get(1),
                 category=Category.query.get(1),
                 created=fake.date_time_this_year(),
@@ -134,7 +134,7 @@ def fake_posts():
 
 
 def fake_comments():
-    for i in range(150):
+    for i in range(15):
         comment = Comment(
             author=fake.name(),
             mail=fake.email(),
@@ -147,7 +147,7 @@ def fake_comments():
         db.session.add(comment)
 
     # 回复
-    for i in range(150):
+    for i in range(15):
         comment = Comment(
             author=fake.name(),
             mail=fake.email(),

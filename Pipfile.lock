@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b3d9efd4666bf7626b1465819795f0e216ca0197811e28057c9a8eff5eb0b098"
+            "sha256": "d32859afeead34fa227a59adf02732a48dcb1e58720857536a6d55af7c31cf13"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -39,11 +39,11 @@
         },
         "faker": {
             "hashes": [
-                "sha256:47ac7d62d5bad8c16422a91f121430ab7656d40ca8fea9c84bcdbdf92e739b03",
-                "sha256:6bc44606d44f711e1d89ad9a5b42394cc6f7eedaffc765ddb5b2d22084c15733"
+                "sha256:3d8ba3e4a3700962a1bf5599a43797b286d1ac52b3dd90c1e8a2625f73c46bd6",
+                "sha256:eb14d0c6b8f7c9902bb07dedc2ad405237edbf808d4ead9f17b9567e586cabee"
             ],
             "index": "pypi",
-            "version": "==5.5.0"
+            "version": "==5.6.0"
         },
         "flask": {
             "hashes": [
@@ -52,6 +52,13 @@
             ],
             "index": "pypi",
             "version": "==1.1.2"
+        },
+        "flask-admin": {
+            "hashes": [
+                "sha256:145f59407d78319925e20f7c3021f60c71f0cacc98e916e52000845dc4c63621"
+            ],
+            "index": "pypi",
+            "version": "==1.5.7"
         },
         "flask-debugtoolbar": {
             "hashes": [
