@@ -20,7 +20,7 @@
 
 克隆代码:
 ```
-$ git clone https://github.com/pythoneer/onelog.git
+$ git clone https://github.com/pythoneer-ljz/onelog.git
 $ cd onelog
 ```
 安装 Pipenv:
