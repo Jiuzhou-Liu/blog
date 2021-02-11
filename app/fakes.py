@@ -100,7 +100,7 @@ def fake_tags():
 
 def fake_posts():
     """
-    for i in range(3): 
+    for i in range(3):
         post = Post(
             title=fake.sentence(),
             content=fake.text(1200),
