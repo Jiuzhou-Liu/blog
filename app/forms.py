@@ -47,10 +47,6 @@ class PageForm(FlaskForm):
     content = TextAreaField("内容", validators=[DataRequired()])
     submit = SubmitField("提交")
 
-    def validate_slug(self, field):
-        if Page.query.filter_by(slug=field.data).first():
-            raise ValidationError("英文标识已存在")
-
 
 class CategoryForm(FlaskForm):
     name = StringField("名称", validators=[DataRequired()])

@@ -41,8 +41,7 @@ def fake_pages():
             Page(
                 title="关于",
                 slug="about",
-                content="""<pre><address>
-空心的个人博客
+                content="""<pre><address>空心的个人博客
 地区：湖南衡阳
 邮箱：<a href="mailto:2267719005@qq.com">2267719005@qq.com</a>
 </address></pre>""",
