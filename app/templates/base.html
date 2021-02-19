@@ -6,6 +6,8 @@
     {% block head %}
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+      <meta name="description" content="" />
+      <meta name="keywords" content="" />
       <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
       <!--<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">-->
       <style>
@@ -39,7 +41,31 @@
 
           <ul class="navbar-nav ml-auto">   
             {{ options['blog_navbar']|safe }}
-            
+            {% if current_user.is_authenticated %}      
+              {{ render_nav_item('admin.write_post','写文章',use_li=True) }}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"  role="button" data-toggle="dropdown" aria-haspopup="true"  aria-expanded="false"> 管理 </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                    <a class="dropdown-item" href="{{ url_for('admin.option') }}">设置</a>
+
+                    <a class="dropdown-item" href="{{ url_for('admin.manage_pages') }}">页面</a>
+
+                    <a class="dropdown-item" href="{{ url_for('admin.manage_categories') }}">分类</a>
+
+                    <a class="dropdown-item" href="{{ url_for('admin.manage_tags') }}">标签</a>
+
+                    <a class="dropdown-item" href="{{ url_for('admin.manage_posts') }}">文章</a>
+
+                    <a class="dropdown-item" style="" href="{{ url_for('admin.manage_comments') }}">评论{% if review_comments_count %}<span style="" class="float-right badge badge-light pt-2">{{ review_comments_count }}</span>{% endif %}</a>
+
+                    <a class="dropdown-item" href="{{ url_for('admin.manage_links') }}">链接</a>     
+                </div>
+              </li>
+              <li class="nav-item nav-link"><a href="{{ url_for('auth.logout')}}  ">注销</a></li>
+            {% else %}
+              <!--<li class="nav-item nav-link"><a href="{{ url_for('auth.login') }} ">登录</a></li>-->
+            {% endif %}
          
         </ul>
 

@@ -1,0 +1,41 @@
+{% extends 'base.html' %} 
+{% from 'bootstrap/form.html' import render_form %}
+
+{% block title %}页面管理{% endblock %}
+
+{% block main %}
+  <div class="row">
+      <div class="col-md-12"> 
+        <header class="p-3"><h3>页面管理 ({{ pages|length }})<a class="btn btn-info btn-sm float-right" href="{{ url_for('.add_page') }}">添加</a></h3></header>
+          <div class="table-responsive">
+              <table class="table table-striped border">
+                <thead>
+                  <tr>
+                    <th>编号</th>
+                    <th>标题</th>
+                    <th>英文标识</th>
+                    <th>操作</th>                
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for page in pages %}
+                      <tr>
+                        <td>{{ page.id }}</td>
+                        <td>{{ page.title }}</td>
+                        <td>{{ page.slug }}</td>
+                        <td>
+                          <form class="inline" method="post" action="{{ url_for('.delete_page', page_id=page.id) }}">
+                            <a class="btn btn-info btn-sm" href="{{ url_for('.edit_page', page_id=page.id) }}">编辑</a> 
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('确定删除吗?');">删除</button>
+                        </form>
+                          
+                        </td>
+                      </tr>
+                  {% endfor %}  
+                </tbody>
+              </table>
+          </div>
+      </div>   
+  </div>  
+{% endblock %} 

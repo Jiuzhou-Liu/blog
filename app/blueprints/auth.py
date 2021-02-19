@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, Blueprint
-from ..models import Option, User, Category, Tag, Post, Comment, Link
-from ..forms import LoginForm, PostForm, CategoryForm, TagForm, CommentForm, OptionForm, SearchForm
+from ..models import Option, Page, User, Category, Tag, Post, Comment, Link
+from ..forms import LoginForm, PostForm, PageForm, CategoryForm, TagForm, CommentForm, OptionForm, SearchForm
 
 from flask_login import login_user, logout_user, login_required, current_user
 from ..utils import redirect_back

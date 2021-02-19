@@ -9,11 +9,12 @@ from flask import (
     abort,
     make_response,
 )
-from ..models import Option, User, Category, Tag, Post, Comment, Link
+from ..models import Option, Page, User, Category, Tag, Post, Comment, Link
 from ..extensions import db
 from ..forms import (
     LoginForm,
     PostForm,
+    PageForm,
     CategoryForm,
     TagForm,
     CommentForm,
@@ -40,7 +41,7 @@ def option():
     form = OptionForm()
     blog_title = Option.query.filter_by(name="blog_title").first()
     blog_sub_title = Option.query.filter_by(name="blog_sub_title").first()
-    blog_about = Option.query.filter_by(name="blog_about").first()
+    blog_navbar = Option.query.filter_by(name="blog_navbar").first()
     blog_footer = Option.query.filter_by(name="blog_footer").first()
     sidebar_comment = Option.query.filter_by(name="sidebar_comment").first()
     comment_review = Option.query.filter_by(name="comment_review").first()
@@ -48,7 +49,7 @@ def option():
     if form.validate_on_submit():
         blog_title.value = form.blog_title.data
         blog_sub_title.value = form.blog_sub_title.data
-        blog_about.value = form.blog_about.data
+        blog_navbar.value = form.blog_navbar.data
         blog_footer.value = form.blog_footer.data
         sidebar_comment.value = form.sidebar_comment.data
         comment_review.value = form.comment_review.data
@@ -58,12 +59,58 @@ def option():
         return redirect(url_for("main.index"))
     form.blog_title.data = blog_title.value
     form.blog_sub_title.data = blog_sub_title.value
-    form.blog_about.data = blog_about.value
+    form.blog_navbar.data = blog_navbar.value
     form.blog_footer.data = blog_footer.value
     form.sidebar_comment.data = int(sidebar_comment.value)
     form.comment_review.data = int(comment_review.value)
 
     return render_template("admin/option.html", form=form)
+
+
+@admin_bp.route("/manage_pages")
+def manage_pages():
+    pages = Page.query.all()
+    return render_template("admin/manage_pages.html", pages=pages)
+
+
+@admin_bp.route("/edit_page/<int:page_id>", methods=["GET", "POST"])
+def edit_page(page_id):
+    page = Page.query.get_or_404(page_id)
+    form = PageForm()
+    if form.validate_on_submit():
+        page.title = form.title.data
+        page.slug = form.slug.data
+        page.content = form.content.data
+        db.session.commit()
+        flash("编辑成功", "success")
+        return redirect(url_for("admin.manage_pages"))
+    form.title.data = page.title
+    form.slug.data = page.slug
+    form.content.data = page.content
+    return render_template("admin/page.html", form=form, type="编辑")
+
+
+@admin_bp.route("/add_page", methods=["GET", "POST"])
+def add_page():
+    form = PageForm()
+    if form.validate_on_submit():
+        page = Page(
+            title=form.title.data, slug=form.slug.data, content=form.content.data
+        )
+        db.session.add(page)
+        db.session.commit()
+        flash("添加成功", "success")
+        return redirect(url_for("admin.manage_pages"))
+    return render_template("admin/page.html", form=form, type="添加")
+
+
+@admin_bp.route("/page/<int:page_id>/delete", methods=["POST"])
+def delete_page(page_id):
+    page = Page.query.get_or_404(page_id)
+    db.session.delete(page)
+    db.session.commit()
+    flash("删除成功", "success")
+    return redirect_back()
 
 
 @admin_bp.route("/manage_categories")

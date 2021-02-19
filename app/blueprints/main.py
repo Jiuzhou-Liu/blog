@@ -15,6 +15,7 @@ from ..models import Option, Page, User, Category, Tag, Post, Comment, Link
 from ..forms import (
     LoginForm,
     PostForm,
+    PageForm, 
     CategoryForm,
     TagForm,
     CommentForm,

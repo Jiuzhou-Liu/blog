@@ -3,23 +3,12 @@ import click
 
 from flask import Flask, g, render_template
 from .settings import config
-from .extensions import db, toolbar, bootstrap, login_manager, csrf, moment, admin
-from .blueprints import main, auth  # , admin
+from .extensions import db, toolbar, bootstrap, login_manager, csrf, moment
+from .blueprints import main, auth, admin
 from .models import Option, Page, User, Category, Tag, Post, Comment, Link
 from sqlalchemy.sql.expression import func
 from sqlalchemy import extract
 from flask_wtf.csrf import CSRFError
-from flask_admin.contrib.sqla import ModelView
-from .admin_view import (
-    OptionModelView,
-    PageModelView,
-    UserModelView,
-    CategoryModelView,
-    TagModelView,
-    PostModelView,
-    CommentModelView,
-    LinkModelView,
-)
 
 
 def create_app(config_name=None):
@@ -42,21 +31,11 @@ def create_app(config_name=None):
     login_manager.init_app(app)
     csrf.init_app(app)
     moment.init_app(app)
-    admin.init_app(app)
-
-    admin.add_view(OptionModelView(Option, db.session))
-    admin.add_view(PageModelView(Page, db.session))
-    admin.add_view(UserModelView(User, db.session))
-    admin.add_view(CategoryModelView(Category, db.session))
-    admin.add_view(TagModelView(Tag, db.session))
-    admin.add_view(PostModelView(Post, db.session))
-    admin.add_view(CommentModelView(Comment, db.session))
-    admin.add_view(LinkModelView(Link, db.session))
 
     # 注册蓝图
     app.register_blueprint(main.main_bp)
     app.register_blueprint(auth.auth_bp, url_prefix="/auth")
-    # app.register_blueprint(admin.admin_bp, url_prefix="/admin")
+    app.register_blueprint(admin.admin_bp, url_prefix="/admin")
 
     # 错误处理
     @app.errorhandler(400)

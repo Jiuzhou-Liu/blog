@@ -5,21 +5,16 @@
 功能列表:  
 页面、分类、标签、归档、文章、搜索、随机查看文章、上一篇下一篇、评论、链接、后台
 
-下一步开发计划:  
-1. 回复评论时直接在目标评论下方显示输入框
-2. 使用 flask-admin 扩展重构后台管理
-3. 插件功能实现
-4. 设计icon
-
-
-演示: 
-<http://3ghh.cn>
+登录后台: 
+<http://127.0.0.1:5000/auth/login>
+用户名: admin
+密码: 123456
 
 ## 安装
 
 克隆代码:
 ```
-$ git clone https://github.com/pythoneer-ljz/onelog.git
+$ git clone https://github.com/liujiuzhou/onelog.git
 $ cd onelog
 ```
 安装 Pipenv:

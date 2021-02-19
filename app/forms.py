@@ -1,4 +1,4 @@
-from .models import Option, User, Category, Tag, Post, Comment, Link
+from .models import Option, Page, User, Category, Tag, Post, Comment, Link
 
 from flask_wtf import FlaskForm
 from wtforms import (
@@ -39,6 +39,17 @@ class PostForm(FlaskForm):
         self.tags.choices = [
             (tag.id, tag.name) for tag in Tag.query.order_by(Tag.name).all()
         ]
+
+
+class PageForm(FlaskForm):
+    title = StringField("标题", validators=[DataRequired()])
+    slug = StringField("英文标识", validators=[DataRequired()])
+    content = TextAreaField("内容", validators=[DataRequired()])
+    submit = SubmitField("提交")
+
+    def validate_slug(self, field):
+        if Page.query.filter_by(slug=field.data).first():
+            raise ValidationError("英文标识已存在")
 
 
 class CategoryForm(FlaskForm):
@@ -98,7 +109,7 @@ class LinkForm(FlaskForm):
 class OptionForm(FlaskForm):
     blog_title = StringField("标题", validators=[DataRequired()])
     blog_sub_title = StringField("子标题")
-    blog_about = TextAreaField("关于页面")
+    blog_navbar = TextAreaField("导航栏右侧")
     blog_footer = TextAreaField("页脚")
     sidebar_comment = BooleanField("侧边栏-近期评论")
     comment_review = BooleanField("评论需要审核")
