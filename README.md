@@ -17,14 +17,13 @@
 $ git clone https://github.com/liujiuzhou/onelog.git
 $ cd onelog
 ```
-安装 Pipenv:
+创建应用实例目录:
 ```
-$ pip install pipenv
+$ mkdir instance
 ```
-使用 Pipenv 创建并激活虚拟环境然后安装依赖项:
+安装依赖项:
 ```
-$ pipenv install --dev
-$ pipenv shell
+$ pip install -r requirements.txt
 ```
 生成虚拟数据然后运行:
 ```

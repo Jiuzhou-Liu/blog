@@ -1,8 +1,9 @@
 {% from 'bootstrap/pagination.html' import render_pagination %}
 {% if posts %}
   <div class="articles pb-3"> 
+    
     {% for post in posts %}
-      <article class="p-3 my-3 border bg-white">
+      <article class="widget widget-board">
         <header>
           <h4><a href="{{ url_for('main.post', post_id=post.id) }}">{{ post['title'] }}</a></h4>
         </header>
@@ -13,6 +14,7 @@
           <small>
             <a href="{{ url_for('main.category', category_id=post.category_id) }}">{{ post['category']['name'] }}</a>  &nbsp;&nbsp;|&nbsp;&nbsp;  阅读：{{ post['read_count'] }} &nbsp; 评论：<a href="{{ url_for('main.post', post_id=post.id) }}#comments">{{ post.comments|length }}</a>
            <time class="float-right" datetime="{{ post['created'].strftime('%Y-%m-%d') }}">{{ moment(post.created).format('LL') }}</time>
+           {{ post.created }}
           </small> 
         </footer>
       </article>

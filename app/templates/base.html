@@ -15,13 +15,28 @@
           background-color:#f2f2f7; 
           font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
         }
+
+        .widget {
+          margin-top: 1rem!important;
+          margin-bottom: 1rem!important;
+          border: 1px solid #dee2e6!important;
+          border-radius: .25rem;
+          background-color: #fff!important;
+        }
+
+        .widget-board {
+          padding: 1rem!important;
+        }
+
+
+
       </style>
       <title>{% block title %}{% endblock %} - {{ options['blog_title'] }}</title>
     {% endblock head %}
   </head>
 
   <body class="d-flex flex-column h-100" style="padding-top: 5rem"> 
-    <nav class="navbar bg-white navbar-light navbar-expand-md fixed-top border-bottom shadow-sm">
+    <nav class="navbar bg-white navbar-light navbar-expand-md fixed-top border-bottom ">
       <div class="container">
         <a class="navbar-brand" href="{{ url_for('main.index') }}"><b>{{ options['blog_title'] }}</b></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,8 +45,6 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             {{ render_nav_item('main.index','首页') }}
-
-
                 {% for page in pages %}
                 {{ render_nav_item('main.page', page.title, slug=page.slug) }}
                   
@@ -40,7 +53,16 @@
           </ul>
 
           <ul class="navbar-nav ml-auto">   
-            {{ options['blog_navbar']|safe }}
+            {# options['blog_navbar']|safe #}
+
+
+<!--
+                  <form class="form-inline my-2" action="/search">
+                  <input class="form-control bg-light " style="width:100%" type="search" name="keyword" placeholder="关键字" aria-label="Search" /> 
+                  <button class="btn btn-primary mt-3 mr-3 inline">搜索</button>
+                  </form>
+                -->
+
             {% if current_user.is_authenticated %}      
               {{ render_nav_item('admin.write_post','写文章',use_li=True) }}
               <li class="nav-item dropdown">
@@ -64,7 +86,7 @@
               </li>
               <li class="nav-item nav-link"><a href="{{ url_for('auth.logout')}}  ">注销</a></li>
             {% else %}
-              <!--<li class="nav-item nav-link"><a href="{{ url_for('auth.login') }} ">登录</a></li>-->
+              <li class="nav-item nav-link"><a href="{{ url_for('auth.login') }} ">登录</a></li>
             {% endif %}
          
         </ul>
@@ -92,8 +114,8 @@
     <footer class="container-full mt-auto bg-light border-top">
       {% block footer %}
       <div class="py-5 text-muted text-center"> 
-          <p><small>© 2015-2020 空心. All Rights Reserved.<br/>
-            Powered by <a target="_blank" href="https://github.com/liujiuzhou/onelog">Onelog</a>.
+          <p><small>© 2015-2023 空心. All Rights Reserved.<br/>
+            Powered by <a target="_blank" href="https://github.com/zero-ljz/onelog">Onelog</a>.
           </small></p>
           {{ options['blog_footer']|safe }}
       </div>

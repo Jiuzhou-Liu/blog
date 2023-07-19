@@ -1,0 +1,12 @@
+flask==1.1.2
+markupsafe==2.0.1
+python-dotenv
+flask-sqlalchemy
+flask-wtf
+faker
+flask-debugtoolbar
+bootstrap-flask
+flask-login
+flask-mail
+flask-moment
+flask-admin
